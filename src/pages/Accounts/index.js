@@ -177,16 +177,16 @@ function Accounts() {
                 <Table className={cx('table')} hover>
                     <thead className={cx('table-heading')}>
                         <tr className="d-flex">
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Username
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Password
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Email
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-6" scope="col">
                                 Phone
                             </th>
                         </tr>
@@ -194,12 +194,12 @@ function Accounts() {
                     <tbody>
                         {items.map((user, index) => (
                             <tr className={cx('d-flex')} key={index}>
-                                <td className="col-3">{user.username}</td>
-                                <td className="col-3">
+                                <td className="col-2">{user.username}</td>
+                                <td className="col-2">
                                     <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
                                 </td>
-                                <td className="col-3">{user.email}</td>
-                                <td className="col-2">{user.phone}</td>
+                                <td className="col-2">{user.email}</td>
+                                <td className="col-5">{user.phone}</td>
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
                                         icon={faPenToSquare}
