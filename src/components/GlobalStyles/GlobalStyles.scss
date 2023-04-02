@@ -1,0 +1,122 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+:root {
+    --primary: #f95b11;
+    --second: #f42f1d;
+    --third: #F8C9B3;
+    --fourth: #F8C9B3; 
+    --button-primary: #0d6efd; 
+    --button-danger: #dc3545;
+} 
+p, td{ 
+    font-weight: 500;
+}
+.d-flex {
+    display: flex;
+} 
+.handle-button { 
+    display: flex; 
+    align-items: baseline;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizespeed;
+}
+
+// Remove Default css HTML
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+li {
+    list-style: none;
+}
+
+button {
+    outline: none;
+    border: none;
+}
+
+.active {
+    background-color: var(--fourth);
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    &:hover {
+        padding: none;
+    }
+} 
+.modal { 
+    
+} 
+.modal-header { 
+    
+} 
+.modal-title { 
+    font-size: 24px; 
+    text-align: center; 
+    width: 100%;
+} 
+.modal-body { 
+
+} 
+.modal-form { 
+
+} 
+.modal-form__group { 
+
+} 
+.modal-form__group label{ 
+    margin-bottom: 8px; 
+    font-weight: bold;
+}   
+.modal-form__group input{ 
+    padding: 8px 12px; 
+    border: 1px solid #ddd; 
+    border-radius: 12px; 
+    margin-bottom: 16px; 
+    font-size: 16px;
+} 
+.modal-button { 
+    padding: 8px 16px;
+} 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #000;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.pagination a:hover {
+    background-color: var(--primary);
+    color: #fff;
+}   
+.pagination .active { 
+    background-color: transparent;
+}
+.pagination .active a{ 
+    background-color: var(--primary);
+    color: #000;  
+}

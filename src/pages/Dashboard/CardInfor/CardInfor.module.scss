@@ -1,0 +1,25 @@
+.card-infor { 
+    display: flex;  
+    justify-content: space-between; 
+    align-items: center;
+    border: 1px solid #ccc; 
+    height: 160px;
+    padding: 12px; 
+    border-radius: 20px; 
+    margin-right: 20px; 
+    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.3);
+}   
+.card-infor__content { 
+
+} 
+.card-infor__name { 
+    font-size: 16px;
+} 
+.card-infor__number { 
+    font-size: 28px;
+}
+.card__icon { 
+    font-size: 32px; 
+    color: var(--primary);  
+    padding: 16px;
+}
