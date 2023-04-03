@@ -89,7 +89,7 @@ function Warehouse() {
           .catch((error) => {
             console.log(error);
           });
-      }, [pageNumber, searchKeyword]);
+      }, [pageNumber, searchKeyword, items]);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);

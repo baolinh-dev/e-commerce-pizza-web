@@ -81,7 +81,7 @@ function Order() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword]);
+    }, [pageNumber, searchKeyword, items]);
     // Delete Fucntion
     const handleDelete = (id) => {
         setDeleteItemId(id);

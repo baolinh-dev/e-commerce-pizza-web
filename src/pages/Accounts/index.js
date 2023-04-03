@@ -70,7 +70,7 @@ function Accounts() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword]);
+    }, [pageNumber, searchKeyword, items]);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -100,7 +100,7 @@ function Accounts() {
     const handleEdit = (user) => {
         setEditUser(user);
         setShowEditModal(true);
-    };
+    };  
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -152,7 +152,8 @@ function Accounts() {
         } else {
             console.log('Không tìm thấy đối tượng `editUser` hoặc không có thuộc tính `id`');
         }
-    };
+    };    
+    console.log(items);
     const handleEditCancel = () => {
         setEditUser(null);
         setShowEditModal(false);
