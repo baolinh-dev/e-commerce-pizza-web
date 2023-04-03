@@ -28,7 +28,10 @@ function Warehouse() {
 
     const [searchKeyword, setSearchKeyword] = useState('');
 
-    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [showRegisterModal, setShowRegisterModal] = useState(false); 
+
+    // URL hình ảnh 
+    const [file, setFile] = useState('');
     const [formData, setFormData] = useState({
         id: '',
         madanhmuc: '',
@@ -36,21 +39,29 @@ function Warehouse() {
         hinhmon: null,
         gia: '',
         mota: '',
-    });
+    });  
+    // Handle File Change 
+    const handleFileChange = (event) => {
+        const selectedFile = URL.createObjectURL(event.target.files[0]);
+        seteditOrder((prevEditOrder) => ({
+          ...prevEditOrder,
+          hinhmon: selectedFile,
+        }));
+      };
     // Register Function
     const handleInputChange = (event) => {
-        if (event.target.name === "hinhmon") {
-          setFormData({
-            ...formData,
-            hinhmon: URL.createObjectURL(event.target.files[0]),
-          });
+        if (event.target.name === 'hinhmon') {
+            setFormData({
+                ...formData,
+                hinhmon: event.target.files[0],
+            });
         } else {
-          setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-          });
+            setFormData({
+                ...formData,
+                [event.target.name]: event.target.value,
+            });
         }
-      }; 
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
         axios
@@ -70,6 +81,7 @@ function Warehouse() {
                     position: toast.POSITION.TOP_RIGHT,
                 });
                 console.log(error.message);
+                console.log(error.response.data); // in ra dữ liệu
             });
     };
     const handleShowRegisterModal = () => setShowRegisterModal(true);
@@ -77,19 +89,22 @@ function Warehouse() {
     // Call API Render
     useEffect(() => {
         axios
-          .get(`/AppFood/mon.php?page=${pageNumber}&search=${searchKeyword}`)
-          .then((response) => {
-            const formattedItems = response.data.result.map(item => {
-              const formattedPrice = parseInt(item.gia).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-              return { ...item, gia: formattedPrice };
+            .get(`/AppFood/mon.php?page=${pageNumber}&search=${searchKeyword}`)
+            .then((response) => {
+                const formattedItems = response.data.result.map((item) => {
+                    const formattedPrice = parseInt(item.gia).toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND',
+                    });
+                    return { ...item, gia: formattedPrice };
+                });
+                setItems(formattedItems);
+                setTotalPages(response.data.totalPages);
+            })
+            .catch((error) => {
+                console.log(error);
             });
-            setItems(formattedItems);
-            setTotalPages(response.data.totalPages);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, [pageNumber, searchKeyword, items]);
+    }, [pageNumber, searchKeyword]);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -118,13 +133,13 @@ function Warehouse() {
     // Edit Function
     const handleEdit = (product) => {
         seteditOrder(product);
-    };
+    }; 
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const madanhmuc = formData.get('madanhmuc') ?? '';
         const tenmon = formData.get('tenmon') ?? '';
-        const hinhmon = formData.get('hinhmon') ?? ''; 
+        const hinhmon = formData.get('hinhmon') ?? '';
         const gia = formData.get('gia') ?? '';
         const mota = formData.get('mota') ?? '';
 
@@ -143,7 +158,7 @@ function Warehouse() {
                         },
                         {
                             headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Content-Type': 'multipart/form-data',
                             },
                         },
                     )
@@ -154,7 +169,14 @@ function Warehouse() {
                             setItems(
                                 items.map((item) =>
                                     item.id === editOrder.id
-                                        ? { ...item, madanhmuc, tenmon, hinhmon, gia, mota }
+                                        ? {
+                                              ...item,
+                                              madanhmuc,
+                                              tenmon,
+                                              gia,
+                                              mota,
+                                              hinhmon: hinhmon ? URL.createObjectURL(hinhmon) : item.hinhmon,
+                                          }
                                         : item,
                                 ),
                             );
@@ -293,13 +315,15 @@ function Warehouse() {
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="hinhmon">Hình Món</label>
-                                <input
+                                {/* <input
                                     type="text"
                                     className="form-control"
                                     id="hinhmon"
                                     name="hinhmon"
                                     defaultValue={editOrder?.hinhmon}
-                                />
+                                />  */}
+                                {editOrder?.hinhmon && <img className={cx('image-preview')} src={editOrder?.hinhmon} alt="Preview" />}
+                                <input className="form-control" type="file" name="hinhmon" onChange={handleFileChange}/>
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="gia">Giá</label>
@@ -364,9 +388,16 @@ function Warehouse() {
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="hinhmon">Hình món</label> 
-                                {formData.hinhmon && <img width={100} src={formData.hinhmon} alt="Preview" />}
-                                <input className="form-control" type="file" name="hinhmon" onChange={handleInputChange} />
+                                <label htmlFor="hinhmon">Hình món</label>
+                                {formData.hinhmon && (
+                                    <img className={cx('image-preview')} src={URL.createObjectURL(formData.hinhmon)} alt="Preview" />
+                                )}
+                                <input
+                                    className="form-control"
+                                    type="file"
+                                    name="hinhmon"
+                                    onChange={handleInputChange}
+                                />
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="gia">Giá</label>
@@ -411,8 +442,8 @@ function Warehouse() {
                     pageRangeDisplayed={5}
                     marginPagesDisplayed={2}
                     onPageChange={({ selected }) => setPageNumber(selected + 1)}
-                    containerClassName={cx('pagination')} 
-                    activeClassName={cx('active')} 
+                    containerClassName={cx('pagination')}
+                    activeClassName={cx('active')}
                     previousLabel="<"
                     nextLabel=">"
                 />
