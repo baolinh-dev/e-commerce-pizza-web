@@ -53,7 +53,8 @@ button {
 }
 
 .active {
-    background-color: var(--fourth);
+    background-color: var(--fourth); 
+ 
     border-top-left-radius: 40px;
     border-bottom-left-radius: 40px;
     &:hover {

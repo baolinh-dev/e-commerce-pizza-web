@@ -170,7 +170,7 @@ function Accounts() {
             {/* Header */}
             <div className={cx('content__header')}>
                 <div></div>
-                <input type="text" placeholder="Search users by name" value={searchKeyword} onChange={handleSearch} />
+                <input type="text" placeholder="Tìm kiếm người dùng bằng tên..." value={searchKeyword} onChange={handleSearch} />
                 <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
             </div>
             {/* Content */}

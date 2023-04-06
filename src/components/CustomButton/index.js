@@ -14,7 +14,7 @@ function CustomButton(props) {
 
   return (
     <Button className={cx('button')} color={color} {...rest}>
-      {icon && <FontAwesomeIcon className={cx('icon')} icon={icon} fontSize={24}/>}
+      {icon && <FontAwesomeIcon className={cx('icon')} icon={icon} fontSize={20}/>}
       {children}
     </Button>
   );

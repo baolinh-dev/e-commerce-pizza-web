@@ -1,19 +1,33 @@
 .sidebar {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     width: 20%;
     min-height: calc(100vh - 1rem); // giảm 1rem để tránh tràn qua khung biên
     height: auto;
-    background-color: var(--primary);  
+    background-color: var(--primary); 
+    position: relative;
+    transition: width 0.3s ease-in-out; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.sidebar .toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-size: 22px;
+    margin: 7px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 .logo {
-    display: flex; 
-    padding-right: 40px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #ddd;
     height: 68px;
     line-height: 68px;
+    padding-top: 80px;
 }
 .logo-img {
     width: 68px;
@@ -26,19 +40,19 @@
 }
 
 .list {
-    padding: 20px 0 20px 40px;
+    padding: 60px 0 20px 40px;
 }
 .anchor {
-    padding: 16px 0 16px 16px; 
+    padding: 16px 0 16px 16px;
     margin-bottom: 20px;
     width: 100%;
     display: inline-flex;
     color: #000;
-    font-weight: 600;  
-    align-items: center;  
-    font-size: 16px; 
-    &:hover { 
-        color: #000; 
+    font-weight: 600;
+    align-items: center;
+    font-size: 16px;
+    &:hover {
+        color: #000;
         cursor: pointer;
     }
 }
@@ -47,15 +61,13 @@
     border-top-left-radius: 40px;
     border-bottom-left-radius: 40px;
     margin-bottom: 20px;
-} 
-.item-icon { 
-    font-size: 20px; 
-    width: 20px; 
-    height: 20px; 
+}
+.item-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
     margin-right: 12px;
 }
 .item:hover {
     background-color: var(--fourth);
 }
-
-

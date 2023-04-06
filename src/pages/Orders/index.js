@@ -81,7 +81,7 @@ function Order() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword, items]);
+    }, [pageNumber, searchKeyword]);
     // Delete Fucntion
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -184,7 +184,7 @@ function Order() {
                     <div></div>
                     <input
                         type="text"
-                        placeholder="Search orders by client name"
+                        placeholder="Tìm kiếm đơn hàng bằng tên khách hàng..."
                         value={searchKeyword}
                         onChange={handleSearch}
                     />

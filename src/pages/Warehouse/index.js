@@ -215,7 +215,7 @@ function Warehouse() {
                     <div></div>
                     <input
                         type="text"
-                        placeholder="Search users by name"
+                        placeholder="Tìm kiếm món bằng tên món..."
                         value={searchKeyword}
                         onChange={handleSearch}
                     />
