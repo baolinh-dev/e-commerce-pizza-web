@@ -28,9 +28,10 @@ function Warehouse() {
 
     const [searchKeyword, setSearchKeyword] = useState('');
 
-    const [showRegisterModal, setShowRegisterModal] = useState(false); 
-
-    // URL hình ảnh 
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [category, setCategory] = useState('all');
+    const [categories, setCategories] = useState([]);
+    // URL hình ảnh
     const [file, setFile] = useState('');
     const [formData, setFormData] = useState({
         id: '',
@@ -39,15 +40,19 @@ function Warehouse() {
         hinhmon: null,
         gia: '',
         mota: '',
-    });  
-    // Handle File Change 
+    });
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+        setPageNumber(1);
+    };
+    // Handle File Change
     const handleFileChange = (event) => {
         const selectedFile = URL.createObjectURL(event.target.files[0]);
         seteditOrder((prevEditOrder) => ({
-          ...prevEditOrder,
-          hinhmon: selectedFile,
+            ...prevEditOrder,
+            hinhmon: selectedFile,
         }));
-      };
+    };
     // Register Function
     const handleInputChange = (event) => {
         if (event.target.name === 'hinhmon') {
@@ -89,7 +94,7 @@ function Warehouse() {
     // Call API Render
     useEffect(() => {
         axios
-            .get(`/AppFood/mon.php?page=${pageNumber}&search=${searchKeyword}`)
+            .get(`/AppFood/mon.php?page=${pageNumber}&search=${searchKeyword}&category=${category}`)
             .then((response) => {
                 const formattedItems = response.data.result.map((item) => {
                     const formattedPrice = parseInt(item.gia).toLocaleString('vi-VN', {
@@ -104,7 +109,20 @@ function Warehouse() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword]);
+    }, [pageNumber, searchKeyword, category]);
+    //
+    useEffect(() => {
+        axios
+            .get(`/AppFood/danhmuc.php`)
+            .then((response) => {
+                const categoryNames = response.data.result.map((category) => category.tendanhmuc);
+                setCategories(response.data.result);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+    console.log(categories);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -133,7 +151,7 @@ function Warehouse() {
     // Edit Function
     const handleEdit = (product) => {
         seteditOrder(product);
-    }; 
+    };
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -212,7 +230,17 @@ function Warehouse() {
             <>
                 <ToastContainer />
                 <div className={cx('content__header')}>
-                    <div></div>
+                    <div>
+                        <label htmlFor="category">Lọc sản phẩm theo danh mục:</label>
+                        <select id="category" value={category} onChange={handleCategoryChange}>
+                            <option value="all">Tất cả</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.tendanhmuc}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <input
                         type="text"
                         placeholder="Tìm kiếm món bằng tên món..."
@@ -322,8 +350,15 @@ function Warehouse() {
                                     name="hinhmon"
                                     defaultValue={editOrder?.hinhmon}
                                 />  */}
-                                {editOrder?.hinhmon && <img className={cx('image-preview')} src={editOrder?.hinhmon} alt="Preview" />}
-                                <input className="form-control" type="file" name="hinhmon" onChange={handleFileChange}/>
+                                {editOrder?.hinhmon && (
+                                    <img className={cx('image-preview')} src={editOrder?.hinhmon} alt="Preview" />
+                                )}
+                                <input
+                                    className="form-control"
+                                    type="file"
+                                    name="hinhmon"
+                                    onChange={handleFileChange}
+                                />
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="gia">Giá</label>
@@ -390,7 +425,11 @@ function Warehouse() {
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="hinhmon">Hình món</label>
                                 {formData.hinhmon && (
-                                    <img className={cx('image-preview')} src={URL.createObjectURL(formData.hinhmon)} alt="Preview" />
+                                    <img
+                                        className={cx('image-preview')}
+                                        src={URL.createObjectURL(formData.hinhmon)}
+                                        alt="Preview"
+                                    />
                                 )}
                                 <input
                                     className="form-control"
