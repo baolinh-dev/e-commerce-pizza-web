@@ -12,7 +12,8 @@ import styles from './Accounts.module.scss';
 var cx = classNames.bind(styles);
 function Accounts() {
     // useState
-    const [showEditModal, setShowEditModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false); 
+    const [isEditSuccess, setIsEditSuccess] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState(null);
@@ -70,7 +71,7 @@ function Accounts() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword, items]);
+    }, [pageNumber, searchKeyword, isEditSuccess]); 
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -137,7 +138,8 @@ function Accounts() {
                                 ),
                             );
                             setShowEditModal(false);
-                            setEditUser(null);
+                            setEditUser(null); 
+                            setIsEditSuccess(true)
                         } else {
                             toast.error('Edit thất bại!');
                         }

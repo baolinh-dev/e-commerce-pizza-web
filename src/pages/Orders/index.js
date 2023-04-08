@@ -195,7 +195,7 @@ function Order() {
                     <thead className={cx('table-heading')}>
                         <tr className="d-flex">
                             <th className="col-2" scope="col">
-                                Tên Khách Hàng
+                                Tên khách hàng
                             </th>
                             <th className="col-2" scope="col">
                                 Email
@@ -207,7 +207,7 @@ function Order() {
                                 Ngày đặt hàng
                             </th>
                             <th className="col-1" scope="col">
-                                Tổng Tiền
+                                Tổng tiền
                             </th>
                             <th className="col-3" scope="col">
                                 Ghi chú

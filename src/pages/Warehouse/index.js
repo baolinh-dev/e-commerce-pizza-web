@@ -231,7 +231,6 @@ function Warehouse() {
                 <ToastContainer />
                 <div className={cx('content__header')}>
                     <div>
-                        <label htmlFor="category">Lọc sản phẩm theo danh mục:</label>
                         <select id="category" value={category} onChange={handleCategoryChange}>
                             <option value="all">Tất cả</option>
                             {categories.map((category) => (

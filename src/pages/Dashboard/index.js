@@ -53,8 +53,6 @@ function DashBoard() {
 
         return [['Ngày', 'Tổng tiền'], ...processedData];
     }
-    console.log('' + columnChart);
-    console.log('' + saveColumnData);
     // useEffect to call api card and chart
     const fetchData = useCallback(() => {
         Promise.all([
