@@ -25,7 +25,8 @@ function Accounts() {
     const [formData, setFormData] = useState({
         id: '',
         username: '',
-        password: '',
+        password: '', 
+        fullname: '',
         email: '',
         phone: '',
     });
@@ -106,19 +107,21 @@ function Accounts() {
         event.preventDefault();
         const formData = new FormData(event.target);
         const username = formData.get('username') ?? '';
-        const password = formData.get('password') ?? '';
+        const password = formData.get('password') ?? ''; 
+        const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const phone = formData.get('phone') ?? '';
 
         if (editUser && editUser.hasOwnProperty('id')) {
-            if (username && password && email && phone) {
+            if (username && password && fullname && email && phone) {
                 axios
                     .post(
                         `/AppFood/updateuser.php?`,
                         {
                             id: editUser.id,
                             username,
-                            password,
+                            password, 
+                            fullname,
                             email,
                             phone,
                         },
@@ -134,7 +137,7 @@ function Accounts() {
                             // Cập nhật lại danh sách sau khi sửa thành công
                             setItems(
                                 items.map((item) =>
-                                    item.id === editUser.id ? { ...item, username, password, email, phone } : item,
+                                    item.id === editUser.id ? { ...item, username, password, fullname, email, phone } : item,
                                 ),
                             );
                             setShowEditModal(false);
@@ -155,7 +158,6 @@ function Accounts() {
             console.log('Không tìm thấy đối tượng `editUser` hoặc không có thuộc tính `id`');
         }
     };    
-    console.log(items);
     const handleEditCancel = () => {
         setEditUser(null);
         setShowEditModal(false);
@@ -186,10 +188,13 @@ function Accounts() {
                             <th className="col-2" scope="col">
                                 Password
                             </th>
+                            <th className="col-3" scope="col">
+                                Fullname
+                            </th> 
                             <th className="col-2" scope="col">
                                 Email
                             </th>
-                            <th className="col-6" scope="col">
+                            <th className="col-3" scope="col">
                                 Phone
                             </th>
                         </tr>
@@ -198,11 +203,13 @@ function Accounts() {
                         {items.map((user, index) => (
                             <tr className={cx('d-flex')} key={index}>
                                 <td className="col-2">{user.username}</td>
-                                <td className="col-2">
+                                <td className="col-2"> 
+                                {/* {user.password.replace(/./g, '*')} */}
                                     <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
                                 </td>
-                                <td className="col-2">{user.email}</td>
-                                <td className="col-5">{user.phone}</td>
+                                <td className="col-3">{user.fullname}</td>
+                                <td className="col-2">{user.email}</td> 
+                                <td className="col-2">{user.phone}</td>
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
                                         icon={faPenToSquare}
@@ -261,6 +268,16 @@ function Accounts() {
                                     id="password"
                                     name="password"
                                     defaultValue={editUser?.password}
+                                />
+                            </div> 
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="fullname">Họ và tên</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="fullname"
+                                    name="fullname"
+                                    defaultValue={editUser?.fullname}
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -324,6 +341,17 @@ function Accounts() {
                                     id="password"
                                     name="password"
                                     value={formData.password}
+                                    onChange={handleInputChange}
+                                />
+                            </div> 
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="fullname">Họ và tên</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="fullname"
+                                    name="fullname"
+                                    value={formData.fullname}
                                     onChange={handleInputChange}
                                 />
                             </div>

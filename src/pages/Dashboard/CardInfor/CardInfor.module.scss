@@ -2,9 +2,8 @@
     display: flex;  
     justify-content: space-between; 
     align-items: center;
-    border: 1px solid #ccc; 
     height: 160px;
-    padding: 12px; 
+    padding: 28px; 
     border-radius: 20px; 
     margin-right: 20px; 
     box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.1);
@@ -15,7 +14,8 @@
     text-overflow: ellipsis;
 } 
 .card-infor__name { 
-    font-size: 16px;
+    font-size: 18px;  
+    font-weight: bolder;
 } 
 .card-infor__number { 
     font-size: 28px;

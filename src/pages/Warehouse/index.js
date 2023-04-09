@@ -85,8 +85,6 @@ function Warehouse() {
                 toast.error('Tạo món thất bại!', {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-                console.log(error.message);
-                console.log(error.response.data); // in ra dữ liệu
             });
     };
     const handleShowRegisterModal = () => setShowRegisterModal(true);
@@ -122,7 +120,6 @@ function Warehouse() {
                 console.log(error);
             });
     }, []);
-    console.log(categories);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
