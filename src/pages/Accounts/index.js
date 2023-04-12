@@ -12,7 +12,7 @@ import styles from './Accounts.module.scss';
 var cx = classNames.bind(styles);
 function Accounts() {
     // useState
-    const [showEditModal, setShowEditModal] = useState(false); 
+    const [showEditModal, setShowEditModal] = useState(false);
     const [isEditSuccess, setIsEditSuccess] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,7 +25,7 @@ function Accounts() {
     const [formData, setFormData] = useState({
         id: '',
         username: '',
-        password: '', 
+        password: '',
         fullname: '',
         email: '',
         phone: '',
@@ -39,26 +39,64 @@ function Accounts() {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios
-            .post('/AppFood/dangki.php', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then((response) => {
-                handleCloseRegisterModal();
-                toast.success('Đăng kí thành công!', {
+        const errors = []; // initialize an empty array to store errors
+
+        // Check for username
+        if (!formData.username) {
+            errors.push('Vui lòng nhập tên đăng nhập');
+        }
+
+        // Check for password
+        if (!formData.password || formData.password.length < 6) {
+            errors.push('Vui lòng nhập mật khẩu ít nhất 6 ký tự');
+        }
+
+        // Check for fullname
+        if (!formData.fullname) {
+            errors.push('Vui lòng nhập họ và tên');
+        }
+
+        // Check for email
+        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            errors.push('Vui lòng nhập email hợp lệ');
+        }
+
+        // Check for phone
+        if (!formData.phone || !/^[0-9]*$/.test(formData.phone) || formData.phone.length !== 10) {
+            errors.push('Vui lòng nhập số điện thoại hợp lệ');
+        }
+
+        // If there are any errors, display them in separate toast messages
+        if (errors.length > 0) {
+            errors.forEach((error) => {
+                toast.error(error, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-            })
-            .catch((error) => {
-                console.log(error);
-                toast.error('Đăng kí thất bại!', {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
             });
+        } else {
+            // If there are no errors, submit the form
+            axios
+                .post('/AppFood/dangki.php', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then((response) => {
+                    handleCloseRegisterModal();
+                    toast.success('Đăng kí thành công!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.error('Đăng kí thất bại!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                    console.log(error.message);
+                });
+        }
     };
+
     const handleShowRegisterModal = () => setShowRegisterModal(true);
     const handleCloseRegisterModal = () => setShowRegisterModal(false);
     // Get Function
@@ -72,7 +110,7 @@ function Accounts() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [pageNumber, searchKeyword, isEditSuccess]); 
+    }, [pageNumber, searchKeyword, isEditSuccess]);
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -102,25 +140,59 @@ function Accounts() {
     const handleEdit = (user) => {
         setEditUser(user);
         setShowEditModal(true);
-    };  
+    };
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const username = formData.get('username') ?? '';
-        const password = formData.get('password') ?? ''; 
+        const password = formData.get('password') ?? '';
         const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const phone = formData.get('phone') ?? '';
+        const errors = []; // initialize an empty array to store errors
 
         if (editUser && editUser.hasOwnProperty('id')) {
-            if (username && password && fullname && email && phone) {
+            // Check for username
+            if (!username) {
+                errors.push('Vui lòng nhập tên đăng nhập');
+            }
+
+            // Check for password
+            if (!password || password.length < 6) {
+                errors.push('Vui lòng nhập mật khẩu ít nhất 6 ký tự');
+            }
+
+            // Check for fullname
+            if (!fullname) {
+                errors.push('Vui lòng nhập họ và tên');
+            }
+
+            // Check for email
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errors.push('Vui lòng nhập email hợp lệ');
+            }
+
+            // Check for phone
+            if (!phone || !/^[0-9]*$/.test(phone) || phone.length !== 10) {
+                errors.push('Vui lòng nhập số điện thoại hợp lệ');
+            }
+
+            // If there are any errors, display them in separate toast messages
+            if (errors.length > 0) {
+                errors.forEach((error) => {
+                    toast.error(error, {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                });
+            } else {
+                // If there are no errors, submit the form
                 axios
                     .post(
                         `/AppFood/updateuser.php?`,
                         {
                             id: editUser.id,
                             username,
-                            password, 
+                            password,
                             fullname,
                             email,
                             phone,
@@ -137,12 +209,14 @@ function Accounts() {
                             // Cập nhật lại danh sách sau khi sửa thành công
                             setItems(
                                 items.map((item) =>
-                                    item.id === editUser.id ? { ...item, username, password, fullname, email, phone } : item,
+                                    item.id === editUser.id
+                                        ? { ...item, username, password, fullname, email, phone }
+                                        : item,
                                 ),
                             );
                             setShowEditModal(false);
-                            setEditUser(null); 
-                            setIsEditSuccess(true)
+                            setEditUser(null);
+                            setIsEditSuccess(true);
                         } else {
                             toast.error('Edit thất bại!');
                         }
@@ -151,13 +225,11 @@ function Accounts() {
                         toast.error('Edit thất bại!');
                         console.log(error);
                     });
-            } else {
-                toast.error('Vui lòng điền đầy đủ thông tin!');
             }
         } else {
             console.log('Không tìm thấy đối tượng `editUser` hoặc không có thuộc tính `id`');
         }
-    };    
+    };
     const handleEditCancel = () => {
         setEditUser(null);
         setShowEditModal(false);
@@ -174,7 +246,12 @@ function Accounts() {
             {/* Header */}
             <div className={cx('content__header')}>
                 <div></div>
-                <input type="text" placeholder="Tìm kiếm người dùng bằng tên..." value={searchKeyword} onChange={handleSearch} />
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm người dùng bằng tên..."
+                    value={searchKeyword}
+                    onChange={handleSearch}
+                />
                 <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
             </div>
             {/* Content */}
@@ -190,7 +267,7 @@ function Accounts() {
                             </th>
                             <th className="col-3" scope="col">
                                 Fullname
-                            </th> 
+                            </th>
                             <th className="col-2" scope="col">
                                 Email
                             </th>
@@ -203,12 +280,14 @@ function Accounts() {
                         {items.map((user, index) => (
                             <tr className={cx('d-flex')} key={index}>
                                 <td className="col-2">{user.username}</td>
-                                <td className="col-2"> 
-                                {/* {user.password.replace(/./g, '*')} */}
+                                <td className="col-2">
+                                    {/* {user.password.replace(/./g, '*')} */}
                                     <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
                                 </td>
                                 <td className="col-3">{user.fullname}</td>
-                                <td className="col-2">{user.email}</td> 
+                                <td className="col-2" style={{ overflow: 'hidden' }}>
+                                    {user.email}
+                                </td>
                                 <td className="col-2">{user.phone}</td>
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
@@ -251,53 +330,58 @@ function Accounts() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Tên đăng nhập</label>
+                                <label htmlFor="username">Tên đăng nhập:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="username"
                                     name="username"
-                                    defaultValue={editUser?.username}
+                                    defaultValue={editUser?.username} 
+                                    placeholder="Vui lòng nhập tên đăng nhập"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="password">Mật khẩu</label>
+                                <label htmlFor="password">Mật khẩu:</label>
                                 <input
                                     type="password"
                                     className="form-control"
                                     id="password"
                                     name="password"
-                                    defaultValue={editUser?.password}
+                                    defaultValue={editUser?.password} 
+                                    placeholder="Vui lòng nhập mật khẩu"
                                 />
-                            </div> 
+                            </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="fullname">Họ và tên</label>
+                                <label htmlFor="fullname">Họ và tên:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="fullname"
                                     name="fullname"
-                                    defaultValue={editUser?.fullname}
+                                    defaultValue={editUser?.fullname} 
+                                    placeholder="Vui lòng nhập họ và tên"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="email">Email</label>
+                                <label htmlFor="email">Email:</label>
                                 <input
                                     type="email"
                                     className="form-control"
                                     id="email"
                                     name="email"
-                                    defaultValue={editUser?.email}
+                                    defaultValue={editUser?.email} 
+                                    placeholder="Vui lòng nhập địa chỉ email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="phone">Số điện thoại</label>
+                                <label htmlFor="phone">Số điện thoại:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="phone"
                                     name="phone"
-                                    defaultValue={editUser?.phone}
+                                    defaultValue={editUser?.phone} 
+                                    placeholder="Vui lòng nhập số điện thoại"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -318,12 +402,12 @@ function Accounts() {
                 {/* Modal Register */}
                 <Modal show={showRegisterModal} onHide={handleCloseRegisterModal} className={cx('modal')} size="lg">
                     <Modal.Header closeButton className={cx('modal-header')}>
-                        <Modal.Title className={cx('modal-title')}>Register</Modal.Title>
+                        <Modal.Title className={cx('modal-title')}>Tạo người dùng</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Tên đăng nhập</label>
+                                <label htmlFor="username">Tên đăng nhập:</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -331,10 +415,11 @@ function Accounts() {
                                     name="username"
                                     value={formData.username}
                                     onChange={handleInputChange}
+                                    placeholder="Nhập tên đăng nhập"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="password">Mật khẩu</label>
+                                <label htmlFor="password">Mật khẩu:</label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -342,10 +427,11 @@ function Accounts() {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
+                                    placeholder="Nhập mật khẩu"
                                 />
-                            </div> 
+                            </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="fullname">Họ và tên</label>
+                                <label htmlFor="fullname">Họ và tên:</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -353,10 +439,11 @@ function Accounts() {
                                     name="fullname"
                                     value={formData.fullname}
                                     onChange={handleInputChange}
+                                    placeholder="Nhập họ và tên"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="email">Email</label>
+                                <label htmlFor="email">Email:</label>
                                 <input
                                     type="email"
                                     className="form-control"
@@ -364,10 +451,11 @@ function Accounts() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
+                                    placeholder="Nhập email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="phone">Số điện thoại</label>
+                                <label htmlFor="phone">Số điện thoại:</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -375,6 +463,7 @@ function Accounts() {
                                     name="phone"
                                     value={formData.phone}
                                     onChange={handleInputChange}
+                                    placeholder="Nhập số điện thoại"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>

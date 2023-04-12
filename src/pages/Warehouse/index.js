@@ -68,25 +68,63 @@ function Warehouse() {
         }
     };
     const handleSubmit = (event) => {
+        const { madanhmuc, tenmon, hinhmon, gia, mota } = formData;
+        const regexInteger = /^[0-9]+$/;
+
         event.preventDefault();
-        axios
-            .post('/AppFood/taomon.php', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then((response) => {
-                handleCloseRegisterModal();
-                toast.success('Tạo món thành công!', {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-            })
-            .catch((error) => {
-                toast.error('Tạo món thất bại!', {
+
+        let errorMessages = [];
+
+        // Kiểm tra điều kiện
+        if (!['1', '2', '3', '4'].includes(madanhmuc)) {
+            errorMessages.push('Vui lòng nhập mã danh mục hợp lệ!');
+        }
+
+        if (!tenmon) {
+            errorMessages.push('Vui lòng chọn tên món!');
+        }
+
+        if (!hinhmon || hinhmon.name === '') {
+            errorMessages.push('Vui lòng chọn hình món!');
+        }
+
+        if (!regexInteger.test(gia)) {
+            errorMessages.push('Vui lòng nhập giá là số nguyên!');
+        }
+
+        if (!mota) {
+            errorMessages.push('Vui lòng nhập mô tả!');
+        }
+
+        // Nếu có lỗi, hiển thị thông báo duy nhất
+        if (errorMessages.length > 0) {
+            errorMessages.forEach((message) => {
+                toast.error(message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
             });
+        } else {
+            // Nếu kiểm tra điều kiện qua được, thực hiện gửi request
+            axios
+                .post('/AppFood/taomon.php', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then((response) => {
+                    handleCloseRegisterModal();
+                    toast.success('Tạo món thành công!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                })
+                .catch((error) => {
+                    toast.error('Tạo món thất bại!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                });
+        }
     };
+
     const handleShowRegisterModal = () => setShowRegisterModal(true);
     const handleCloseRegisterModal = () => setShowRegisterModal(false);
     // Call API Render
@@ -157,9 +195,37 @@ function Warehouse() {
         const hinhmon = formData.get('hinhmon') ?? '';
         const gia = formData.get('gia') ?? '';
         const mota = formData.get('mota') ?? '';
+        const regexInteger = /^[0-9]+$/;
+        let errorMessages = [];
 
         if (editOrder && editOrder.hasOwnProperty('id')) {
-            if (madanhmuc && tenmon && hinhmon && gia && mota) {
+            if (!['1', '2', '3', '4'].includes(madanhmuc)) {
+                errorMessages.push('Vui lòng nhập mã danh mục hợp lệ!');
+            }
+
+            if (!tenmon) {
+                errorMessages.push('Vui lòng chọn tên món!');
+            }
+
+            if (!hinhmon || hinhmon.name === '') {
+                errorMessages.push('Vui lòng chọn hình món!');
+            }
+
+            if (!regexInteger.test(gia)) {
+                errorMessages.push('Vui lòng nhập giá là số nguyên!');
+            }
+
+            if (!mota) {
+                errorMessages.push('Vui lòng nhập mô tả!');
+            }
+            // Display error messages
+            if (errorMessages.length > 0) {
+                errorMessages.forEach((message) => {
+                    toast.error(message, {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                });
+            } else {
                 axios
                     .post(
                         `/AppFood/updatemon.php?`,
@@ -198,20 +264,19 @@ function Warehouse() {
                             setShowEditModal(false);
                             seteditOrder(null);
                         } else {
-                            toast.error('Edit thất bại!');
+                            errorMessages.push('Edit thất bại!');
                         }
                     })
                     .catch((error) => {
-                        toast.error('Edit thất bại!');
+                        errorMessages.push('Edit thất bại!');
                         console.log(error);
                     });
-            } else {
-                toast.error('Vui lòng điền đầy đủ thông tin!');
             }
         } else {
             console.log('Không tìm thấy đối tượng `editOrder` hoặc không có thuộc tính `id`');
         }
     };
+
     const handleEditCancel = () => {
         seteditOrder(null);
         setShowEditModal(false);
@@ -318,34 +383,35 @@ function Warehouse() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="madanhmuc">Mã Danh Mục</label>
+                                <label htmlFor="madanhmuc">
+                                    Mã danh mục:{' '}
+                                    <span className={cx('note')}>
+                                        {' '}
+                                        (1: Món chính, 2: Burger, 3: Đồ uống, 4: Món phụ)
+                                    </span>
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="madanhmuc"
                                     name="madanhmuc"
-                                    defaultValue={editOrder?.madanhmuc}
+                                    defaultValue={editOrder?.madanhmuc} 
+                                    placeholder="Vui lòng nhập mã danh mục"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="tenmon">Tên món</label>
+                                <label htmlFor="tenmon">Tên món:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tenmon"
                                     name="tenmon"
-                                    defaultValue={editOrder?.tenmon}
+                                    defaultValue={editOrder?.tenmon} 
+                                    placeholder="Vui lòng nhập tên món"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="hinhmon">Hình Món</label>
-                                {/* <input
-                                    type="text"
-                                    className="form-control"
-                                    id="hinhmon"
-                                    name="hinhmon"
-                                    defaultValue={editOrder?.hinhmon}
-                                />  */}
+                                <label htmlFor="hinhmon">Hình Món:</label>
                                 {editOrder?.hinhmon && (
                                     <img className={cx('image-preview')} src={editOrder?.hinhmon} alt="Preview" />
                                 )}
@@ -353,27 +419,30 @@ function Warehouse() {
                                     className="form-control"
                                     type="file"
                                     name="hinhmon"
-                                    onChange={handleFileChange}
+                                    onChange={handleFileChange} 
+                                    p
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="gia">Giá</label>
+                                <label htmlFor="gia">Giá:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="gia"
                                     name="gia"
-                                    defaultValue={editOrder?.gia?.replace(/\D/g, '')}
+                                    defaultValue={editOrder?.gia?.replace(/\D/g, '')} 
+                                    placeholder="Vui lòng nhập giá"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="mota">Mô tả</label>
+                                <label htmlFor="mota">Mô tả:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="mota"
                                     name="mota"
-                                    defaultValue={editOrder?.mota}
+                                    defaultValue={editOrder?.mota} 
+                                    placeholder="Vui lòng nhập mô tả"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -394,32 +463,40 @@ function Warehouse() {
                 {/* Modal Register */}
                 <Modal show={showRegisterModal} onHide={handleCloseRegisterModal} size="lg">
                     <Modal.Header className={cx('modal-header')} closeButton>
-                        <Modal.Title className={cx('modal-title')}>Register</Modal.Title>
+                        <Modal.Title className={cx('modal-title')}>Tạo sản phẩm</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="madanhmuc">Mã danh mục</label>
+                                <label htmlFor="madanhmuc">
+                                    Mã danh mục:{' '}
+                                    <span className={cx('note')}>
+                                        {' '}
+                                        (1: Món chính, 2: Burger, 3: Đồ uống, 4: Món phụ)
+                                    </span>
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="madanhmuc"
                                     name="madanhmuc"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập mã danh mục"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="tenmon">Tên món</label>
+                                <label htmlFor="tenmon">Tên món:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tenmon"
                                     name="tenmon"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập tên món"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="hinhmon">Hình món</label>
+                                <label htmlFor="hinhmon">Hình món:</label>
                                 {formData.hinhmon && (
                                     <img
                                         className={cx('image-preview')}
@@ -432,26 +509,29 @@ function Warehouse() {
                                     type="file"
                                     name="hinhmon"
                                     onChange={handleInputChange}
+                                    placeholder="Chọn hình ảnh"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="gia">Giá</label>
+                                <label htmlFor="gia">Giá:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="gia"
                                     name="gia"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập giá"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="mota">Mô tả</label>
+                                <label htmlFor="mota">Mô tả:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="mota"
                                     name="mota"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập mô tả"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>

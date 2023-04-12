@@ -10,6 +10,12 @@ import classNames from 'classnames/bind';
 import styles from './Order.module.scss';
 import ReactPaginate from 'react-paginate';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { zonedTimeToUtc, format } from 'date-fns-tz';
+import moment from 'moment-timezone';
+import 'moment/locale/vi';
+
 var cx = classNames.bind(styles);
 
 function Order() {
@@ -28,10 +34,16 @@ function Order() {
         tenkhachhang: '',
         email: '',
         sodienthoai: '',
+        ngaydathang: '',
         tongtien: '',
         ghichu: '',
-        ngaydathang: '',
     });
+
+    // Get the current date in the Vietnam timezone
+    const vietnamDate = zonedTimeToUtc(new Date(), 'Asia/Ho_Chi_Minh');
+
+    // Format the Vietnam date as a string
+    const vietnamDateString = format(vietnamDate, 'yyyy/MM/dd');
     // Register Function
     const handleInputChange = (event) => {
         setFormData({
@@ -40,26 +52,71 @@ function Order() {
         });
     };
     const handleSubmit = (event) => {
+        const { tenkhachhang, email, sodienthoai, ngaydathang, tongtien, ghichu } = formData;
+        const regexInteger = /^[0-9]+$/;
         event.preventDefault();
-        axios
-            .post('/AppFood/taodonhang.php', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then((response) => {
-                handleCloseRegisterModal();
-                toast.success('Tạo đơn hàng thành công!', {
+        let errorMessages = [];
+
+        // Check for errors
+        if (!tenkhachhang) {
+            errorMessages.push('Vui lòng nhập tên khách hàng!');
+        }
+
+        if (!email) {
+            errorMessages.push('Vui lòng nhập email!');
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            errorMessages.push('Email không hợp lệ!');
+        }
+
+        if (!sodienthoai) {
+            errorMessages.push('Vui lòng nhập số điện thoại!');
+        } else if (!regexInteger.test(sodienthoai)) {
+            errorMessages.push('Số điện thoại phải là số nguyên!');
+        }
+
+        if (!ngaydathang) {
+            errorMessages.push('Vui lòng chọn ngày đặt hàng!');
+        }
+
+        if (!tongtien) {
+            errorMessages.push('Vui lòng nhập tổng tiền!');
+        } else if (!regexInteger.test(tongtien)) {
+            errorMessages.push('Tổng tiền phải là số nguyên!');
+        }
+
+        if (!ghichu) {
+            errorMessages.push('Vui lòng nhập tên khách hàng!');
+        }
+
+        // If there are errors, display toast message(s)
+        if (errorMessages.length > 0) {
+            errorMessages.forEach((errorMessage) => {
+                toast.error(errorMessage, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-            })
-            .catch((error) => {
-                console.log(error);
-                toast.error('Tạo đơn hàng thất bại!', {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
             });
+        } else {
+            // Submit the form data if there are no errors
+            axios
+                .post('/AppFood/taodonhang.php', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then((response) => {
+                    handleCloseRegisterModal();
+                    toast.success('Tạo đơn hàng thành công!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.error('Tạo đơn hàng thất bại!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                    console.log(error.message);
+                });
+        }
     };
     const handleShowRegisterModal = () => setShowRegisterModal(true);
     const handleCloseRegisterModal = () => setShowRegisterModal(false);
@@ -122,48 +179,93 @@ function Order() {
         const tenkhachhang = formData.get('tenkhachhang') ?? '';
         const email = formData.get('email') ?? '';
         const sodienthoai = formData.get('sodienthoai') ?? '';
+        const ngaydathang = formData.get('ngaydathang') ?? '';
         const tongtien = formData.get('tongtien') ?? '';
         const ghichu = formData.get('ghichu') ?? '';
-        axios
-            .post(
-                `/AppFood/updatedonhang.php`,
-                {
-                    id: editOrder.id,
-                    tenkhachhang,
-                    email,
-                    sodienthoai,
-                    tongtien,
-                    ghichu,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                },
-            )
-            .then(() => {
-                // Cập nhật lại danh sách sau khi sửa thành công
-                setItems(
-                    items.map((item) =>
-                        item.id === editOrder.id
-                            ? { ...item, tenkhachhang, email, sodienthoai, tongtien, ghichu }
-                            : item,
-                    ),
-                );
-                setShowEditModal(false);
-                setEditOrder(null);
-                // Toast
-                toast.success('Chỉnh sửa thành công!', {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-                // Toast
-                toast.success('Chỉnh sửa thất bại!', {
+        const regexInteger = /^[0-9]+$/;
+        let errorMessages = [];
+
+        // Check for errors
+        if (!tenkhachhang) {
+            errorMessages.push('Vui lòng nhập tên khách hàng!');
+        }
+
+        if (!email) {
+            errorMessages.push('Vui lòng nhập email!');
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            errorMessages.push('Email không hợp lệ!');
+        }
+
+        if (!sodienthoai) {
+            errorMessages.push('Vui lòng nhập số điện thoại!');
+        } else if (!regexInteger.test(sodienthoai)) {
+            errorMessages.push('Số điện thoại phải là số nguyên!');
+        }
+
+        if (!ngaydathang) {
+            errorMessages.push('Vui lòng chọn ngày đặt hàng!');
+        }
+
+        if (!tongtien) {
+            errorMessages.push('Vui lòng chọn ngày đặt hàng!');
+        } else if (!regexInteger.test(tongtien)) {
+            errorMessages.push('Tổng tiền phải là số nguyên!');
+        } 
+
+        if (!ghichu) {
+            errorMessages.push('Vui lòng nhập ghi chú!');
+        }
+
+        // If there are errors, display toast message(s)
+        if (errorMessages.length > 0) {
+            errorMessages.forEach((errorMessage) => {
+                toast.error(errorMessage, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
             });
+        } else {
+            axios
+                .post(
+                    `/AppFood/updatedonhang.php`,
+                    {
+                        id: editOrder.id,
+                        tenkhachhang,
+                        email,
+                        sodienthoai,
+                        ngaydathang,
+                        tongtien,
+                        ghichu,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    },
+                )
+                .then(() => {
+                    // Update the list after successful edit
+                    setItems(
+                        items.map((item) =>
+                            item.id === editOrder.id
+                                ? { ...item, tenkhachhang, email, sodienthoai, ngaydathang, tongtien, ghichu }
+                                : item,
+                        ),
+                    );
+                    setShowEditModal(false);
+                    setEditOrder(null);
+                    // Toast
+                    toast.success('Chỉnh sửa thành công!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    // Toast
+                    toast.error('Chỉnh sửa thất bại!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                });
+        }
     };
     const handleEditCancel = () => {
         setEditOrder(null);
@@ -173,14 +275,14 @@ function Order() {
     const handleSearch = (event) => {
         setSearchKeyword(event.target.value);
         setPageNumber(1);
-    }; 
+    };
     // Render UI
     return (
         <div className={cx('container')}>
             <>
                 <ToastContainer />
                 {/* Header */}
-                <div className={cx('content__header')}> 
+                <div className={cx('content__header')}>
                     <div></div>
                     <input
                         type="text"
@@ -189,22 +291,22 @@ function Order() {
                         onChange={handleSearch}
                     />
                     <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
-                </div> 
+                </div>
                 {/* Body */}
                 <Table className={cx('table')} hover>
                     <thead className={cx('table-heading')}>
                         <tr className="d-flex">
                             <th className="col-2" scope="col">
-                                Tên khách hàng
+                                Username
                             </th>
-                            <th className="col-2" scope="col">
+                            <th className="col-3" scope="col">
                                 Email
                             </th>
                             <th className="col-1" scope="col">
                                 Điện thoại
                             </th>
-                            <th className="col-2" scope="col">
-                                Ngày đặt hàng
+                            <th className="col-1" scope="col">
+                                Date
                             </th>
                             <th className="col-1" scope="col">
                                 Tổng tiền
@@ -221,9 +323,11 @@ function Order() {
                                     <p className={cx('item__name--text')}>{order.tenkhachhang}</p>
                                 </td>
 
-                                <td className="col-2">{order.email}</td>
+                                <td className="col-3" style={{ overflow: 'hidden' }}>
+                                    {order.email}
+                                </td>
                                 <td className="col-1">{order.sodienthoai}</td>
-                                <td className="col-2">{order.ngaydathang}</td>
+                                <td className="col-1">{order.ngaydathang}</td>
                                 <td className="col-1">{order.tongtien}</td>
                                 <td className="col-3">{order.ghichu}</td>
                                 <td className={cx('handle-button', 'col-1')}>
@@ -267,13 +371,14 @@ function Order() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Tên Khách Hàng</label>
+                                <label htmlFor="username">Username:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tenkhachhang"
                                     name="tenkhachhang"
-                                    defaultValue={editOrder?.tenkhachhang}
+                                    defaultValue={editOrder?.tenkhachhang} 
+                                    placeholder="Vui lòng nhập tên khách hàng"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -283,17 +388,40 @@ function Order() {
                                     className="form-control"
                                     id="email"
                                     name="email"
-                                    defaultValue={editOrder?.email}
+                                    defaultValue={editOrder?.email} 
+                                    placeholder="Vui lòng nhập email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="email">Số Điện Thoại</label>
+                                <label htmlFor="sodienthoai">Số Điện Thoại</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="sodienthoai"
                                     name="sodienthoai"
-                                    defaultValue={editOrder?.sodienthoai}
+                                    defaultValue={editOrder?.sodienthoai}  
+                                    placeholder="Vui lòng nhập số điện thoại"
+                                />
+                            </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="ngaydathang">Ngày Đặt Hàng</label>
+                                {/* <input
+                                    type="date"
+                                    className="form-control"
+                                    id="ngaydathang"
+                                    name="ngaydathang"
+                                    defaultValue={editOrder?.ngaydathang}
+                                /> */}
+                                <DatePicker
+                                    selected={formData.ngaydathang}
+                                    onChange={(date) => setFormData({ ...formData, ngaydathang: date })}
+                                    className="form-control"
+                                    id="ngaydathang"
+                                    name="ngaydathang"
+                                    dateFormat="yyyy/MM/dd"
+                                    todayButton="Today"
+                                    defaultValue={editOrder?.ngaydathang}
+                                    placeholderText="Chọn ngày đặt hàng"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -302,9 +430,10 @@ function Order() {
                                     type="text"
                                     className="form-control"
                                     id="tongtien"
-                                    name="tongtien"
+                                    name="tongtien"  
+                                    placeholder="Vui lòng nhập tổng tiền"
                                     defaultValue={editOrder?.tongtien?.replace(/\D/g, '')}
-                                />
+                                /> 
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="phone">Ghi Chú</label>
@@ -312,7 +441,8 @@ function Order() {
                                     type="text"
                                     className="form-control"
                                     id="ghichu"
-                                    name="ghichu"
+                                    name="ghichu" 
+                                    placeholder="Vui lòng nhập ghi chú"
                                     defaultValue={editOrder?.ghichu}
                                 />
                             </div>
@@ -339,63 +469,76 @@ function Order() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="tenkhachhang">Tên khách hàng</label>
+                                <label htmlFor="tenkhachhang">Username:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tenkhachhang"
                                     name="tenkhachhang"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập tên username"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="email">Email</label>
+                                <label htmlFor="email">Email:</label>
                                 <input
                                     type="email"
                                     className="form-control"
                                     id="email"
                                     name="email"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập địa chỉ email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="sodienthoai">Số điện thoại</label>
+                                <label htmlFor="sodienthoai">Số điện thoại:</label>
                                 <input
                                     type="sodienthoai"
                                     className="form-control"
                                     id="sodienthoai"
                                     name="sodienthoai"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập số điện thoại"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="tongtien">Tổng tiền</label>
+                                <label htmlFor="ngaydathang">Ngày đặt hàng:</label>
+                                <DatePicker
+                                    selected={formData.ngaydathang}
+                                    onChange={(date) =>
+                                        setFormData({
+                                            ...formData,
+                                            ngaydathang: date,
+                                        })
+                                    }
+                                    dateFormat="yyyy/MM/dd"
+                                    className="form-control"
+                                    id="ngaydathang"
+                                    name="ngaydathang"
+                                    placeholderText="Chọn ngày đặt hàng"
+                                    todayButton="Today"
+                                />
+                            </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="tongtien">Tổng tiền:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tongtien"
                                     name="tongtien"
                                     onChange={handleInputChange}
+                                    placeholder="Nhập tổng tiền"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="ghichu">Ghi chú</label>
+                                <label htmlFor="ghichu">Ghi chú:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="ghichu"
                                     name="ghichu"
                                     onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className={cx('modal-form__group')}>
-                                <label htmlFor="ngaydathang">Ngày đặt hàng</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="ngaydathang"
-                                    name="ngaydathang"
-                                    onChange={handleInputChange}
+                                    placeholder="Nhập ghi chú"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -421,9 +564,8 @@ function Order() {
                     pageRangeDisplayed={5}
                     marginPagesDisplayed={2}
                     onPageChange={({ selected }) => setPageNumber(selected + 1)}
-                    containerClassName={cx('pagination')} 
-                    
-                    activeClassName={cx('active')} 
+                    containerClassName={cx('pagination')}
+                    activeClassName={cx('active')}
                     previousLabel="<"
                     nextLabel=">"
                 />
