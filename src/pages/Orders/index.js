@@ -13,8 +13,6 @@ import ReactPaginate from 'react-paginate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { zonedTimeToUtc, format } from 'date-fns-tz';
-import moment from 'moment-timezone';
-import 'moment/locale/vi';
 
 var cx = classNames.bind(styles);
 
@@ -31,35 +29,36 @@ function Order() {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [formData, setFormData] = useState({
         id: '',
-        tenkhachhang: '',
+        tenkhachhang: '', 
+        fullname: '',
         email: '',
         sodienthoai: '',
         ngaydathang: '',
         tongtien: '',
-        ghichu: '',
+        ghichu: '', 
     });
 
-    // Get the current date in the Vietnam timezone
-    const vietnamDate = zonedTimeToUtc(new Date(), 'Asia/Ho_Chi_Minh');
-
-    // Format the Vietnam date as a string
-    const vietnamDateString = format(vietnamDate, 'yyyy/MM/dd');
     // Register Function
     const handleInputChange = (event) => {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value,
         });
-    };
+    }; 
+    console.log(formData);
     const handleSubmit = (event) => {
-        const { tenkhachhang, email, sodienthoai, ngaydathang, tongtien, ghichu } = formData;
-        const regexInteger = /^[0-9]+$/;
         event.preventDefault();
+        const { tenkhachhang, fullname, email, sodienthoai, ngaydathang, tongtien, ghichu } = formData;
+        const regexInteger = /^[0-9]+$/;
         let errorMessages = [];
 
         // Check for errors
         if (!tenkhachhang) {
             errorMessages.push('Vui lòng nhập tên khách hàng!');
+        } 
+
+        if (!fullname) {
+            errorMessages.push('Vui lòng nhập họ và tên khách hàng!');
         }
 
         if (!email) {
@@ -176,7 +175,8 @@ function Order() {
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const tenkhachhang = formData.get('tenkhachhang') ?? '';
+        const tenkhachhang = formData.get('tenkhachhang') ?? ''; 
+        const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const sodienthoai = formData.get('sodienthoai') ?? '';
         const ngaydathang = formData.get('ngaydathang') ?? '';
@@ -187,7 +187,11 @@ function Order() {
 
         // Check for errors
         if (!tenkhachhang) {
-            errorMessages.push('Vui lòng nhập tên khách hàng!');
+            errorMessages.push('Vui lòng nhập username khách hàng!');
+        } 
+
+        if (!fullname) {
+            errorMessages.push('Vui lòng nhập họ và tên khách hàng!');
         }
 
         if (!email) {
@@ -229,7 +233,8 @@ function Order() {
                     `/AppFood/updatedonhang.php`,
                     {
                         id: editOrder.id,
-                        tenkhachhang,
+                        tenkhachhang, 
+                        fullname,
                         email,
                         sodienthoai,
                         ngaydathang,
@@ -247,7 +252,7 @@ function Order() {
                     setItems(
                         items.map((item) =>
                             item.id === editOrder.id
-                                ? { ...item, tenkhachhang, email, sodienthoai, ngaydathang, tongtien, ghichu }
+                                ? { ...item, tenkhachhang, fullname, email, sodienthoai, ngaydathang, tongtien, ghichu }
                                 : item,
                         ),
                     );
@@ -296,10 +301,13 @@ function Order() {
                 <Table className={cx('table')} hover>
                     <thead className={cx('table-heading')}>
                         <tr className="d-flex">
-                            <th className="col-2" scope="col">
+                            <th className="col-1" scope="col">
                                 Username
+                            </th> 
+                            <th className="col-2" scope="col">
+                                Họ và tên
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Email
                             </th>
                             <th className="col-1" scope="col">
@@ -313,23 +321,25 @@ function Order() {
                             </th>
                             <th className="col-3" scope="col">
                                 Ghi chú
-                            </th>
+                            </th> 
                         </tr>
                     </thead>
                     <tbody>
                         {items.map((order, index) => (
                             <tr className={cx('d-flex')} key={index}>
-                                <td className={cx('col-2', 'item__name')}>
+                                <td className={cx('col-1', 'item__name')}>
                                     <p className={cx('item__name--text')}>{order.tenkhachhang}</p>
                                 </td>
-
-                                <td className="col-3" style={{ overflow: 'hidden' }}>
+                                <td className="col-2" style={{ overflow: 'hidden' }}>
+                                    {order.fullname}
+                                </td>
+                                <td className="col-2" style={{ overflow: 'hidden' }}>
                                     {order.email}
                                 </td>
                                 <td className="col-1">{order.sodienthoai}</td>
                                 <td className="col-1">{order.ngaydathang}</td>
                                 <td className="col-1">{order.tongtien}</td>
-                                <td className="col-3">{order.ghichu}</td>
+                                <td className="col-3">{order.ghichu}</td> 
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
                                         icon={faPenToSquare}
@@ -341,7 +351,7 @@ function Order() {
                                         color="var(--button-danger)"
                                         onClick={() => handleDelete(order.id)}
                                     />
-                                </td>
+                                </td> 
                             </tr>
                         ))}
                     </tbody>
@@ -366,18 +376,29 @@ function Order() {
                 {/* Modal Edit */}
                 <Modal className={cx('modal')} show={showEditModal} onHide={handleEditCancel} size="lg">
                     <Modal.Header className={cx('modal-header')} closeButton>
-                        <Modal.Title className={cx('modal-title')}>Sửa thông tin đơn hàng</Modal.Title>
+                        <Modal.Title className={cx('modal-title')}>Chỉnh sửa thông tin đơn hàng</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Username:</label>
+                                <label htmlFor="tenkhachhang">Username:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="tenkhachhang"
                                     name="tenkhachhang"
                                     defaultValue={editOrder?.tenkhachhang} 
+                                    placeholder="Vui lòng nhập tên khách hàng"
+                                />
+                            </div> 
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="fullname">Fullname:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="fullname"
+                                    name="fullname"
+                                    defaultValue={editOrder?.fullname} 
                                     placeholder="Vui lòng nhập tên khách hàng"
                                 />
                             </div>
@@ -477,6 +498,17 @@ function Order() {
                                     name="tenkhachhang"
                                     onChange={handleInputChange}
                                     placeholder="Nhập tên username"
+                                />
+                            </div> 
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="fullname">Fullname:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="fullname"
+                                    name="fullname"
+                                    onChange={handleInputChange}
+                                    placeholder="Nhập họ và tên"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>

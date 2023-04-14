@@ -420,7 +420,6 @@ function Warehouse() {
                                     type="file"
                                     name="hinhmon"
                                     onChange={handleFileChange} 
-                                    p
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
