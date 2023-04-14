@@ -22,6 +22,12 @@ function Accounts() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [role, setRole] = useState('all');
+    const roles = [
+        { id: 'all', name: 'Tất cả' },
+        { id: 'user', name: 'Người dùng' },
+        { id: 'admin', name: 'Quản trị viên' },
+    ];
     const [formData, setFormData] = useState({
         id: '',
         username: '',
@@ -29,6 +35,7 @@ function Accounts() {
         fullname: '',
         email: '',
         phone: '',
+        role: '',
     });
     // Register Function
     const handleInputChange = (event) => {
@@ -66,6 +73,10 @@ function Accounts() {
             errors.push('Vui lòng nhập số điện thoại hợp lệ');
         }
 
+        if (!formData.role) {
+            errors.push('Vui lòng nhập quyền truy cập');
+        }
+
         // If there are any errors, display them in separate toast messages
         if (errors.length > 0) {
             errors.forEach((error) => {
@@ -101,16 +112,23 @@ function Accounts() {
     const handleCloseRegisterModal = () => setShowRegisterModal(false);
     // Get Function
     useEffect(() => {
-        axios
-            .get(`/AppFood/user.php?page=${pageNumber}&search=${searchKeyword}`)
-            .then((response) => {
+        const fetchItems = async () => {
+            try {
+                const response = await axios.get(`/AppFood/user.php`, {
+                    params: { page: pageNumber, search: searchKeyword, role },
+                });
                 setItems(response.data.result);
                 setTotalPages(response.data.totalPages);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.log(error);
-            });
-    }, [pageNumber, searchKeyword, isEditSuccess]);
+            }
+        };
+        fetchItems();
+    }, [pageNumber, searchKeyword, isEditSuccess, role]);
+
+    const handleRoleChange = (event) => {
+        setRole(event.target.value);
+    };
     // Delete Function
     const handleDelete = (id) => {
         setDeleteItemId(id);
@@ -149,6 +167,7 @@ function Accounts() {
         const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const phone = formData.get('phone') ?? '';
+        const role = formData.get('role') ?? '';
         const errors = []; // initialize an empty array to store errors
 
         if (editUser && editUser.hasOwnProperty('id')) {
@@ -177,6 +196,10 @@ function Accounts() {
                 errors.push('Vui lòng nhập số điện thoại hợp lệ');
             }
 
+            if (!role) {
+                errors.push('Vui lòng nhập quyền truy cập');
+            }
+
             // If there are any errors, display them in separate toast messages
             if (errors.length > 0) {
                 errors.forEach((error) => {
@@ -196,6 +219,7 @@ function Accounts() {
                             fullname,
                             email,
                             phone,
+                            role,
                         },
                         {
                             headers: {
@@ -210,7 +234,7 @@ function Accounts() {
                             setItems(
                                 items.map((item) =>
                                     item.id === editUser.id
-                                        ? { ...item, username, password, fullname, email, phone }
+                                        ? { ...item, username, password, fullname, email, phone, role }
                                         : item,
                                 ),
                             );
@@ -245,7 +269,15 @@ function Accounts() {
             <ToastContainer />
             {/* Header */}
             <div className={cx('content__header')}>
-                <div></div>
+                <div>
+                    <select id="role" value={role} onChange={handleRoleChange}>
+                        {roles.map((role) => (
+                            <option key={role.id} value={role.id}>
+                                {role.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <input
                     type="text"
                     placeholder="Tìm kiếm người dùng bằng tên..."
@@ -265,14 +297,17 @@ function Accounts() {
                             <th className="col-2" scope="col">
                                 Password
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Fullname
                             </th>
                             <th className="col-2" scope="col">
                                 Email
                             </th>
-                            <th className="col-3" scope="col">
+                            <th className="col-2" scope="col">
                                 Phone
+                            </th>
+                            <th className="col-1" scope="col">
+                                role
                             </th>
                         </tr>
                     </thead>
@@ -284,11 +319,12 @@ function Accounts() {
                                     {/* {user.password.replace(/./g, '*')} */}
                                     <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
                                 </td>
-                                <td className="col-3">{user.fullname}</td>
+                                <td className="col-2">{user.fullname}</td>
                                 <td className="col-2" style={{ overflow: 'hidden' }}>
                                     {user.email}
                                 </td>
                                 <td className="col-2">{user.phone}</td>
+                                <td className="col-1">{user.role}</td>
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
                                         icon={faPenToSquare}
@@ -336,7 +372,7 @@ function Accounts() {
                                     className="form-control"
                                     id="username"
                                     name="username"
-                                    defaultValue={editUser?.username} 
+                                    defaultValue={editUser?.username}
                                     placeholder="Vui lòng nhập tên đăng nhập"
                                 />
                             </div>
@@ -347,7 +383,7 @@ function Accounts() {
                                     className="form-control"
                                     id="password"
                                     name="password"
-                                    defaultValue={editUser?.password} 
+                                    defaultValue={editUser?.password}
                                     placeholder="Vui lòng nhập mật khẩu"
                                 />
                             </div>
@@ -358,7 +394,7 @@ function Accounts() {
                                     className="form-control"
                                     id="fullname"
                                     name="fullname"
-                                    defaultValue={editUser?.fullname} 
+                                    defaultValue={editUser?.fullname}
                                     placeholder="Vui lòng nhập họ và tên"
                                 />
                             </div>
@@ -369,7 +405,7 @@ function Accounts() {
                                     className="form-control"
                                     id="email"
                                     name="email"
-                                    defaultValue={editUser?.email} 
+                                    defaultValue={editUser?.email}
                                     placeholder="Vui lòng nhập địa chỉ email"
                                 />
                             </div>
@@ -380,10 +416,29 @@ function Accounts() {
                                     className="form-control"
                                     id="phone"
                                     name="phone"
-                                    defaultValue={editUser?.phone} 
+                                    defaultValue={editUser?.phone}
                                     placeholder="Vui lòng nhập số điện thoại"
                                 />
                             </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="role">Role:</label>
+                                <select
+                                    className="form-control"
+                                    id="role"
+                                    name="role"
+                                    defaultValue={editUser?.role}
+                                    placeholder="Vui lòng thay đổi quyền"
+                                    style={{ padding: '8px 12px', marginBottom: '16px', fontSize: '16px' }}
+                                >
+                                    <option value="user" style={{ padding: '8px 12px' }}>
+                                        user
+                                    </option>
+                                    <option value="admin" style={{ padding: '8px 12px' }}>
+                                        admin
+                                    </option>
+                                </select>
+                            </div>
+
                             <div className={cx('modal-form__group')}>
                                 <button type="submit" className={cx('modal-button', 'btn-primary', 'btn')}>
                                     Lưu
@@ -465,6 +520,24 @@ function Accounts() {
                                     onChange={handleInputChange}
                                     placeholder="Nhập số điện thoại"
                                 />
+                            </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="role">Role:</label>
+                                <select
+                                    className="form-control"
+                                    id="role"
+                                    name="role"
+                                    defaultValue={editUser?.role}
+                                    placeholder="Vui lòng thay đổi quyền"
+                                    style={{ padding: '8px 12px', marginBottom: '16px', fontSize: '16px' }}
+                                >
+                                    <option value="user" style={{ padding: '8px 12px' }}>
+                                        user
+                                    </option>
+                                    <option value="admin" style={{ padding: '8px 12px' }}>
+                                        admin
+                                    </option>
+                                </select>
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <button type="submit" className={cx('modal-button', 'btn-primary', 'btn')}>
