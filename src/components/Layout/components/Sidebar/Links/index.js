@@ -3,7 +3,7 @@ import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 
 const Links = [ 
     { 
-        path: "/", 
+        path: "/dashboard", 
         name: "DashBoard", 
         icon: faGauge
     }, 

@@ -20,6 +20,17 @@
     position: absolute;
     right: 0;
     top: 0;
+}  
+.sidebar .logout-btn { 
+    float: right;
+    background: transparent;
+    font-weight: 600;
+}
+.admin-infor { 
+    padding: 4px 8px;
+} 
+.admin-infor p{ 
+    font-size: 20px;
 }
 .logo {
     display: flex;
@@ -27,7 +38,7 @@
     justify-content: center;
     height: 68px;
     line-height: 68px;
-    padding-top: 80px;
+    padding-top: 40px;
 }
 .logo-img {
     width: 68px;

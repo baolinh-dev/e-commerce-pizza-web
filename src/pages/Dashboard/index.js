@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useEffect, useState, useCallback } from 'react';
 import { Chart } from 'react-google-charts';
 import classNames from 'classnames/bind';
-import styles from './Dashboard.module.scss';
+import styles from './Dashboard.module.scss'; 
+import Cookies from 'js-cookie';
 var cx = classNames.bind(styles);
 function DashBoard() {
     // useState
@@ -143,10 +144,8 @@ function DashBoard() {
                                 },
                                 vAxis: {
                                     title: 'Tổng tiền',
-                                },  
-
-                                
-                            }} 
+                                },
+                            }}
                             width="100%"
                             height="400px"
                         />

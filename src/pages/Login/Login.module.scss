@@ -1,0 +1,38 @@
+.form { 
+    border: 1px solid #ddd; 
+    padding: 20px; 
+    border-radius: 20px; 
+    color: #000; 
+    background-color: #fff; 
+    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 1.0); 
+    min-width: 400px;
+}  
+.form h1 { 
+    text-align: center;
+}
+.form-item { 
+    display: flex; 
+    flex-direction: column; 
+    
+}   
+.form-item + .form-item {
+    margin-top: 16px;
+}
+.form-item label{ 
+
+} 
+.form-item input{ 
+    padding: 4px 8px;
+    border-radius: 8px; 
+    outline: none; 
+    border: 1px solid #ddd;
+} 
+
+.form .form-login-btn { 
+    background-color: var(--primary); 
+    margin-top: 20px; 
+    padding: 8px; 
+    border-radius: 12px; 
+    float: right; 
+    color: #fff;
+}
