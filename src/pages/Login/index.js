@@ -70,7 +70,8 @@ function Login() {
                         type="text"
                         id="username"
                         name="username"
-                        value={username}
+                        value={username} 
+                        placeholder='Nhập username ...'
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
@@ -80,7 +81,8 @@ function Login() {
                     <input
                         type="password"
                         id="password"
-                        name="password"
+                        name="password" 
+                        placeholder='Nhập password ...' 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
