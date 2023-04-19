@@ -35,15 +35,17 @@ function Accounts() {
         fullname: '',
         email: '',
         phone: '',
-        role: '',
+        role: 'user',
     });
-    // Register Function
     const handleInputChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        });
+        const value = event.target.value;
+
+        setFormData((prevState) => ({
+            ...prevState,
+            [event.target.name]: value || prevState[event.target.name],
+        }));
     };
+    console.log(formData);
     const handleSubmit = (event) => {
         event.preventDefault();
         const errors = []; // initialize an empty array to store errors
@@ -54,8 +56,8 @@ function Accounts() {
         }
 
         // Check for password
-        if (!formData.password || formData.password.length < 6) {
-            errors.push('Vui lòng nhập mật khẩu ít nhất 6 ký tự');
+        if (!formData.password) {
+            errors.push('Vui lòng nhập mật khẩu ');
         }
 
         // Check for fullname
@@ -69,7 +71,7 @@ function Accounts() {
         }
 
         // Check for phone
-        if (!formData.phone || !/^[0-9]*$/.test(formData.phone) || formData.phone.length !== 10) {
+        if (!formData.phone || !/^[0-9]*$/.test(formData.phone)) {
             errors.push('Vui lòng nhập số điện thoại hợp lệ');
         }
 
@@ -191,8 +193,7 @@ function Accounts() {
                 errors.push('Vui lòng nhập email hợp lệ');
             }
 
-            // Check for phone
-            if (!phone || !/^[0-9]*$/.test(phone) || phone.length !== 10) {
+            if (!phone || !/^[0-9]*$/.test(phone)) {
                 errors.push('Vui lòng nhập số điện thoại hợp lệ');
             }
 
@@ -293,6 +294,9 @@ function Accounts() {
                         <tr className="d-flex">
                             <th className="col-2" scope="col">
                                 Username
+                            </th> 
+                            <th className="col-1" scope="col">
+                                Avatar
                             </th>
                             <th className="col-2" scope="col">
                                 Password
@@ -303,7 +307,7 @@ function Accounts() {
                             <th className="col-2" scope="col">
                                 Email
                             </th>
-                            <th className="col-2" scope="col">
+                            <th className="col-1" scope="col">
                                 Phone
                             </th>
                             <th className="col-1" scope="col">
@@ -314,7 +318,10 @@ function Accounts() {
                     <tbody>
                         {items.map((user, index) => (
                             <tr className={cx('d-flex')} key={index}>
-                                <td className="col-2">{user.username}</td>
+                                <td className="col-2">{user.username}</td> 
+                                <td className="col-1"> 
+                                    <img className={cx('avatar-table')} src={user.avatar} />
+                                </td>
                                 <td className="col-2">
                                     {/* {user.password.replace(/./g, '*')} */}
                                     <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
@@ -323,7 +330,7 @@ function Accounts() {
                                 <td className="col-2" style={{ overflow: 'hidden' }}>
                                     {user.email}
                                 </td>
-                                <td className="col-2">{user.phone}</td>
+                                <td className="col-1">{user.phone}</td>
                                 <td className="col-1">{user.role}</td>
                                 <td className={cx('handle-button', 'col-1')}>
                                     <CustomButton
@@ -468,11 +475,10 @@ function Accounts() {
                                     className="form-control"
                                     id="username"
                                     name="username"
-                                    value={formData.username}
                                     onChange={handleInputChange}
                                     placeholder="Nhập tên đăng nhập"
                                 />
-                            </div>
+                            </div>  
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="password">Mật khẩu:</label>
                                 <input
@@ -480,7 +486,6 @@ function Accounts() {
                                     className="form-control"
                                     id="password"
                                     name="password"
-                                    value={formData.password}
                                     onChange={handleInputChange}
                                     placeholder="Nhập mật khẩu"
                                 />
@@ -492,7 +497,6 @@ function Accounts() {
                                     className="form-control"
                                     id="fullname"
                                     name="fullname"
-                                    value={formData.fullname}
                                     onChange={handleInputChange}
                                     placeholder="Nhập họ và tên"
                                 />
@@ -504,7 +508,6 @@ function Accounts() {
                                     className="form-control"
                                     id="email"
                                     name="email"
-                                    value={formData.email}
                                     onChange={handleInputChange}
                                     placeholder="Nhập email"
                                 />
@@ -516,7 +519,6 @@ function Accounts() {
                                     className="form-control"
                                     id="phone"
                                     name="phone"
-                                    value={formData.phone}
                                     onChange={handleInputChange}
                                     placeholder="Nhập số điện thoại"
                                 />
@@ -527,7 +529,7 @@ function Accounts() {
                                     className="form-control"
                                     id="role"
                                     name="role"
-                                    defaultValue={editUser?.role}
+                                    onChange={handleInputChange}
                                     placeholder="Vui lòng thay đổi quyền"
                                     style={{ padding: '8px 12px', marginBottom: '16px', fontSize: '16px' }}
                                 >

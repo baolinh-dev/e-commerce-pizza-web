@@ -52,4 +52,21 @@
 }
 .row {
     display: flex;
+} 
+
+.image-preview { 
+    margin-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    margin-left: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    width: 100px; 
+    height: auto; 
+    padding: 10px; 
+    box-sizing: content-box;
+} 
+.avatar-table { 
+    width: 52px; 
+    height: 52px; 
+    border-radius: 50%;
 }
