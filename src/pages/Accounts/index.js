@@ -31,21 +31,27 @@ function Accounts() {
     const [formData, setFormData] = useState({
         id: '',
         username: '',
+        avatar: '',
         password: '',
         fullname: '',
         email: '',
         phone: '',
         role: 'user',
     });
+    // Register Function
     const handleInputChange = (event) => {
-        const value = event.target.value;
-
-        setFormData((prevState) => ({
-            ...prevState,
-            [event.target.name]: value || prevState[event.target.name],
-        }));
+        if (event.target.name === 'avatar') {
+            setFormData({
+                ...formData,
+                avatar: event.target.files[0],
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [event.target.name]: event.target.value,
+            });
+        }
     };
-    console.log(formData);
     const handleSubmit = (event) => {
         event.preventDefault();
         const errors = []; // initialize an empty array to store errors
@@ -161,21 +167,37 @@ function Accounts() {
         setEditUser(user);
         setShowEditModal(true);
     };
+    //
+    const handleFileChange = (event) => {
+        const selectedFile = URL.createObjectURL(event.target.files[0]);
+        setEditUser((prevEditOrder) => ({
+            ...prevEditOrder,
+            avatar: selectedFile,
+        }));
+    };
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const username = formData.get('username') ?? '';
+        const avatar = formData.get('avatar') ?? '';
         const password = formData.get('password') ?? '';
         const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const phone = formData.get('phone') ?? '';
         const role = formData.get('role') ?? '';
-        const errors = []; // initialize an empty array to store errors
+        const errors = []; // initialize an empty array to store errors 
+
+        console.log("Avatar: ",avatar.name);
 
         if (editUser && editUser.hasOwnProperty('id')) {
             // Check for username
             if (!username) {
                 errors.push('Vui lòng nhập tên đăng nhập');
+            }
+
+            // Check for avatar
+            if (!avatar && avatar.name === '') {
+                errors.push('Vui lòng chọn avatar');
             }
 
             // Check for password
@@ -216,6 +238,7 @@ function Accounts() {
                         {
                             id: editUser.id,
                             username,
+                            avatar,
                             password,
                             fullname,
                             email,
@@ -224,8 +247,9 @@ function Accounts() {
                         },
                         {
                             headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Content-Type': 'multipart/form-data',
                             },
+                            baseURL: 'http://127.0.0.1', // set the base URL to the correct port
                         },
                     )
                     .then((response) => {
@@ -235,7 +259,7 @@ function Accounts() {
                             setItems(
                                 items.map((item) =>
                                     item.id === editUser.id
-                                        ? { ...item, username, password, fullname, email, phone, role }
+                                        ? { ...item, username, avatar, password, fullname, email, phone, role }
                                         : item,
                                 ),
                             );
@@ -294,7 +318,7 @@ function Accounts() {
                         <tr className="d-flex">
                             <th className="col-2" scope="col">
                                 Username
-                            </th> 
+                            </th>
                             <th className="col-1" scope="col">
                                 Avatar
                             </th>
@@ -318,8 +342,8 @@ function Accounts() {
                     <tbody>
                         {items.map((user, index) => (
                             <tr className={cx('d-flex')} key={index}>
-                                <td className="col-2">{user.username}</td> 
-                                <td className="col-1"> 
+                                <td className="col-2">{user.username}</td>
+                                <td className="col-1">
                                     <img className={cx('avatar-table')} src={user.avatar} />
                                 </td>
                                 <td className="col-2">
@@ -382,6 +406,13 @@ function Accounts() {
                                     defaultValue={editUser?.username}
                                     placeholder="Vui lòng nhập tên đăng nhập"
                                 />
+                            </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="avatar">Avatar:</label>
+                                {editUser?.avatar && (
+                                    <img className={cx('image-preview')} src={editUser?.avatar} alt="Preview" />
+                                )}
+                                <input className="form-control" type="file" name="avatar" onChange={handleFileChange} />
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="password">Mật khẩu:</label>
@@ -478,7 +509,24 @@ function Accounts() {
                                     onChange={handleInputChange}
                                     placeholder="Nhập tên đăng nhập"
                                 />
-                            </div>  
+                            </div>
+                            <div className={cx('modal-form__group')}>
+                                <label htmlFor="avatar">Avatar:</label>
+                                {formData.avatar && (
+                                    <img
+                                        className={cx('image-preview')}
+                                        src={URL.createObjectURL(formData.avatar)}
+                                        alt="Preview"
+                                    />
+                                )}
+                                <input
+                                    className="form-control"
+                                    type="file"
+                                    name="avatar"
+                                    onChange={handleInputChange}
+                                    placeholder="Chọn hình ảnh"
+                                />
+                            </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="password">Mật khẩu:</label>
                                 <input
