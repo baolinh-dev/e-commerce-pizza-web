@@ -17,15 +17,12 @@ function Sidebar() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(300);
 
-    function handleToggleSidebar() {
-        setIsSidebarCollapsed(!isSidebarCollapsed);
-        setSidebarWidth(isSidebarCollapsed ? 300 : 120);
-    }
 
     function handleLogout() {
         Cookies.remove('username');
-        Cookies.remove('role      ');
+        Cookies.remove('role');
         Cookies.remove('fullname');
+        Cookies.remove('avatar');
         // xóa tất cả Cookies khác ở đây nếu có
 
         window.location.href = '/';
@@ -34,7 +31,11 @@ function Sidebar() {
     return (
         <div className={cx('sidebar')} style={{ width: sidebarWidth }}>
             <div className={cx('admin-infor')}>
-                Xin chào ! <p className={cx('username')}>{Cookies.get('fullname')}</p>
+                <div className={cx('admin-infor-detail')}>
+                    <p className={cx('username')}>{Cookies.get('fullname')}</p> 
+                    <span className={cx('role')}>{Cookies.get('role')}</span> 
+                </div>
+                <img src={Cookies.get('avatar')} />
             </div>
             <div className={cx('logo')}>
                 <img className={cx('logo-img')} src={images.logo} alt="" />
@@ -49,12 +50,9 @@ function Sidebar() {
                     ))}
                 </ul>
                 <button className={cx('logout-btn')} onClick={handleLogout}>
-                    <FontAwesomeIcon className={cx('item-icon')} icon={faSignOutAlt} />  
+                    <FontAwesomeIcon className={cx('item-icon')} icon={faSignOutAlt} />
                 </button>
             </div>
-            <button className={cx('toggle-btn')} onClick={handleToggleSidebar}>
-                <FontAwesomeIcon icon={faBars} />
-            </button>
         </div>
     );
 }

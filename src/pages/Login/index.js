@@ -28,21 +28,20 @@ function Login() {
             )
             .then((response) => {
                 const data = response.data;
-                const { username, role, fullname } = data.result[0];
+                const { username, role, fullname, avatar } = data.result[0]; 
                 console.log(data);
-                console.log(data.username);
-                console.log(username, role, fullname);
-                if (data.success && role === 'admin') {
-                    toast.success('Đăng nhập không thành công.');
+                if (data.success && role === 'admin') { 
                     setMessage('Đăng nhập thành công!');
+                    toast.success(message);
                     Cookies.set('username', username);
                     Cookies.set('role', role);
-                    Cookies.set('fullname', fullname);
-                    // Lưu thông tin đăng nhập vào cookie
+                    Cookies.set('fullname', fullname); 
+                    Cookies.set('avatar', avatar)
+                    // // Lưu thông tin đăng nhập vào cookie
                     navigate('/dashboard'); // Chuyển hướng đến trang dashboard
                 } else {
                     setMessage('Đăng nhập không thành công!');
-                    toast.error('Đăng nhập không thành công.');
+                    toast.error(message);
                 }
             })
             .catch((error) => {

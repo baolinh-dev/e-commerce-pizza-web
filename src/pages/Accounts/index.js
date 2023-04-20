@@ -196,7 +196,7 @@ function Accounts() {
             }
 
             // Check for avatar
-            if (!avatar && avatar.name === '') {
+            if (!avatar || avatar.name === '') {
                 errors.push('Vui lòng chọn avatar');
             }
 
@@ -287,7 +287,9 @@ function Accounts() {
     const handleSearch = (event) => {
         setSearchKeyword(event.target.value);
         setPageNumber(1);
-    };
+    }; 
+    // test 
+    console.log("Avatar link: ", editUser?.avatar);
     return (
         // Render UI
         <div className={cx('container')}>

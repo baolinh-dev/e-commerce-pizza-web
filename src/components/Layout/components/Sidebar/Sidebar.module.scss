@@ -4,9 +4,9 @@
     width: 20%;
     min-height: calc(100vh - 1rem); // giảm 1rem để tránh tràn qua khung biên
     height: auto;
-    background-color: var(--primary); 
+    background-color: var(--primary);
     position: relative;
-    transition: width 0.3s ease-in-out; 
+    transition: width 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .sidebar .toggle-btn {
@@ -20,16 +20,41 @@
     position: absolute;
     right: 0;
     top: 0;
-}  
-.sidebar .logout-btn { 
+}
+.sidebar .logout-btn {
     float: right;
     background: transparent;
     font-weight: 600;
 }
-.admin-infor { 
-    padding: 4px 8px;
-} 
-.admin-infor p{ 
+.admin-infor {
+    display: flex;
+    padding: 4px 32px;
+    align-items: center; 
+    margin-bottom: 28px;
+}
+.admin-infor img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid #ddd; 
+    margin-left: 20px;
+}
+.admin-infor-detail { 
+    padding-top: 10px;
+}
+.admin-infor-detail .username {
+    font-size: 16px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.admin-infor-detail .role {
+    font-style: italic;
+    font-size: 15px;
+}
+.admin-infor p {
     font-size: 20px;
 }
 .logo {
@@ -81,4 +106,10 @@
 }
 .item:hover {
     background-color: var(--fourth);
+}
+.avatar-table {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
 }
