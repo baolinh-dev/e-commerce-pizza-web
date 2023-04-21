@@ -14,8 +14,7 @@ import Cookies from 'js-cookie';
 var cx = classNames.bind(styles);
 
 function Sidebar() {
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-    const [sidebarWidth, setSidebarWidth] = useState(300);
+
 
 
     function handleLogout() {
@@ -29,14 +28,7 @@ function Sidebar() {
     }
 
     return (
-        <div className={cx('sidebar')} style={{ width: sidebarWidth }}>
-            <div className={cx('admin-infor')}>
-                <div className={cx('admin-infor-detail')}>
-                    <p className={cx('username')}>{Cookies.get('fullname')}</p> 
-                    <span className={cx('role')}>{Cookies.get('role')}</span> 
-                </div>
-                <img src={Cookies.get('avatar')} />
-            </div>
+        <div className={cx('sidebar')}>
             <div className={cx('logo')}>
                 <img className={cx('logo-img')} src={images.logo} alt="" />
             </div>
@@ -45,7 +37,7 @@ function Sidebar() {
                     {links.map((item, index) => (
                         <NavLink key={index} className={cx('anchor')} to={item.path}>
                             <FontAwesomeIcon className={cx('item-icon')} icon={item.icon} />
-                            {!isSidebarCollapsed && <span>{item.name}</span>}
+                            {<span>{item.name}</span>}
                         </NavLink>
                     ))}
                 </ul>
