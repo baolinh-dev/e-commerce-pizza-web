@@ -43,8 +43,7 @@
     border-radius: 40px; 
     width: 40%; 
     outline: none;  
-    border: none;
-    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.4); 
+    border: 1px solid #ddd;
     min-height: 40px;
 }   
 .content__header select {  

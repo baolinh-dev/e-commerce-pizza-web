@@ -307,10 +307,18 @@ function Order() {
                 {/* Body */}
                 <div className={cx('table-header')}>
                     <h1 className="table-heading">Orders Table</h1>
-                    <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
+                    <CustomButton
+                        icon={faPlus}
+                        color="var(--button-primary)"
+                        onClick={handleShowRegisterModal}
+                        style={{
+                            boxShadow: '0 0 4px rgba(0, 0, 0, 0.2)',
+                            border: 'none',
+                        }}
+                    />
                 </div>
                 <div className={cx('table-wrapper')}>
-                    <Table className={cx('table')} hover>
+                    <Table style={{ border: `1px solid #ddd` }} className={cx('table')} hover>
                         <thead className={cx('table-heading')}>
                             <tr className="d-flex">
                                 <th className="col-1" scope="col">
