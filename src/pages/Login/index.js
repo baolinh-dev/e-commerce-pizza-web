@@ -11,7 +11,6 @@ var cx = classNames.bind(styles);
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -31,8 +30,7 @@ function Login() {
                 const { username, role, fullname, avatar } = data.result[0]; 
                 console.log(data);
                 if (data.success && role === 'admin') { 
-                    setMessage('Đăng nhập thành công!');
-                    toast.success(message);
+                    toast.success('Đăng nhập thành công!');
                     Cookies.set('username', username);
                     Cookies.set('role', role);
                     Cookies.set('fullname', fullname); 
@@ -40,13 +38,11 @@ function Login() {
                     // // Lưu thông tin đăng nhập vào cookie
                     navigate('/dashboard'); // Chuyển hướng đến trang dashboard
                 } else {
-                    setMessage('Đăng nhập không thành công!');
-                    toast.error(message);
+                    toast.error('Đăng nhập không thành công!');
                 }
             })
             .catch((error) => {
-                console.error(error);
-                setMessage('Đã xảy ra lỗi khi đăng nhập!');
+                console.error(error);   
             });
     };
 
