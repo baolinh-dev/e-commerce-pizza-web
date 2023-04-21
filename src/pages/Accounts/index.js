@@ -1,5 +1,6 @@
 import CustomButton from '~/components/CustomButton';
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import { Modal, Button, Table } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -185,9 +186,9 @@ function Accounts() {
         const email = formData.get('email') ?? '';
         const phone = formData.get('phone') ?? '';
         const role = formData.get('role') ?? '';
-        const errors = []; // initialize an empty array to store errors 
+        const errors = []; // initialize an empty array to store errors
 
-        console.log("Avatar: ",avatar.name);
+        console.log('Avatar: ', avatar.name);
 
         if (editUser && editUser.hasOwnProperty('id')) {
             // Check for username
@@ -287,9 +288,9 @@ function Accounts() {
     const handleSearch = (event) => {
         setSearchKeyword(event.target.value);
         setPageNumber(1);
-    }; 
-    // test 
-    console.log("Avatar link: ", editUser?.avatar);
+    };
+    // test
+    console.log('Avatar link: ', editUser?.avatar);
     return (
         // Render UI
         <div className={cx('container')}>
@@ -311,69 +312,82 @@ function Accounts() {
                     value={searchKeyword}
                     onChange={handleSearch}
                 />
-                <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
+
+                <div className={cx('admin-infor')}>
+                    <div className={cx('admin-infor-detail')}>
+                        <p className={cx('username')}>{Cookies.get('fullname')}</p>
+                        <span className={cx('role')}>{Cookies.get('role')}</span>
+                    </div>
+                    <img src={Cookies.get('avatar')} />
+                </div>
             </div>
             {/* Content */}
             <>
-                <Table className={cx('table')} hover>
-                    <thead className={cx('table-heading')}>
-                        <tr className="d-flex">
-                            <th className="col-2" scope="col">
-                                Username
-                            </th>
-                            <th className="col-1" scope="col">
-                                Avatar
-                            </th>
-                            <th className="col-2" scope="col">
-                                Password
-                            </th>
-                            <th className="col-2" scope="col">
-                                Fullname
-                            </th>
-                            <th className="col-2" scope="col">
-                                Email
-                            </th>
-                            <th className="col-1" scope="col">
-                                Phone
-                            </th>
-                            <th className="col-1" scope="col">
-                                role
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {items.map((user, index) => (
-                            <tr className={cx('d-flex')} key={index}>
-                                <td className="col-2">{user.username}</td>
-                                <td className="col-1">
-                                    <img className={cx('avatar-table')} src={user.avatar} />
-                                </td>
-                                <td className="col-2">
-                                    {/* {user.password.replace(/./g, '*')} */}
-                                    <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
-                                </td>
-                                <td className="col-2">{user.fullname}</td>
-                                <td className="col-2" style={{ overflow: 'hidden' }}>
-                                    {user.email}
-                                </td>
-                                <td className="col-1">{user.phone}</td>
-                                <td className="col-1">{user.role}</td>
-                                <td className={cx('handle-button', 'col-1')}>
-                                    <CustomButton
-                                        icon={faPenToSquare}
-                                        color="var(--button-primary)"
-                                        onClick={() => handleEdit(user)}
-                                    />
-                                    <CustomButton
-                                        icon={faTrashCan}
-                                        color="var(--button-danger)"
-                                        onClick={() => handleDelete(user.id)}
-                                    />
-                                </td>
+                <div className={cx('table-header')}>
+                    <h1 className="table-heading">Accounts Table</h1>
+                    <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
+                </div>
+                <div className={cx('table-wrapper')}>
+                    <Table className={cx('table')} hover>
+                        <thead className={cx('table-heading')}>
+                            <tr className="d-flex">
+                                <th className="col-2" scope="col">
+                                    Username
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Avatar
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Password
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Fullname
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Email
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Phone
+                                </th>
+                                <th className="col-1" scope="col">
+                                    role
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {items.map((user, index) => (
+                                <tr className={cx('d-flex')} key={index}>
+                                    <td className="col-2">{user.username}</td>
+                                    <td className="col-1">
+                                        <img className={cx('avatar-table')} src={user.avatar} />
+                                    </td>
+                                    <td className="col-2">
+                                        {/* {user.password.replace(/./g, '*')} */}
+                                        <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>
+                                    </td>
+                                    <td className="col-2">{user.fullname}</td>
+                                    <td className="col-2" style={{ overflow: 'hidden' }}>
+                                        {user.email}
+                                    </td>
+                                    <td className="col-1">{user.phone}</td>
+                                    <td className="col-1">{user.role}</td>
+                                    <td className={cx('handle-button', 'col-1')}>
+                                        <CustomButton
+                                            icon={faPenToSquare}
+                                            color="var(--button-primary)"
+                                            onClick={() => handleEdit(user)}
+                                        />
+                                        <CustomButton
+                                            icon={faTrashCan}
+                                            color="var(--button-danger)"
+                                            onClick={() => handleDelete(user.id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
                 {/* Modal Delete */}
                 <Modal show={showDeleteModal} onHide={handleDeleteCancel} className={cx('modal')} size="lg">
                     <Modal.Header closeButton className={cx('modal-header')}>

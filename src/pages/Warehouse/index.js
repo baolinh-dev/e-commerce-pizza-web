@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -308,56 +309,68 @@ function Warehouse() {
                         value={searchKeyword}
                         onChange={handleSearch}
                     />
+                    <div className={cx('admin-infor')}>
+                        <div className={cx('admin-infor-detail')}>
+                            <p className={cx('username')}>{Cookies.get('fullname')}</p>
+                            <span className={cx('role')}>{Cookies.get('role')}</span>
+                        </div>
+                        <img src={Cookies.get('avatar')} />
+                    </div>
+                </div>
+                <div className={cx('table-header')}>
+                    <h1 className="table-heading">Warehouse Table</h1>
                     <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
                 </div>
-                <Table className={cx('table')} hover>
-                    <thead className={cx('table-heading')}>
-                        <tr className="d-flex">
-                            <th className="col-2" scope="col">
-                                Tên món ăn
-                            </th>
-                            <th className="col-2" scope="col">
-                                Hình ảnh
-                            </th>
-                            <th className="col-1" scope="col">
-                                Giá
-                            </th>
-                            <th className="col-6" scope="col">
-                                Mô tả
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {items.map((product, index) => (
-                            <tr className={cx('d-flex')} key={index}>
-                                <td className={cx('col-2', 'item__name')}>
-                                    <p className={cx('item__name--text')}>{product.tenmon}</p>
-                                </td>
-                                <td className={cx('col-2', 'item__image')}>
-                                    <img className={cx('item__image--inner')} src={product.hinhmon} alt="" />
-                                </td>
-                                <td className={cx('col-1', 'd-flex', 'item__cost')}>
-                                    <p className={cx('item__cost--text')}>{product.gia}</p>
-                                </td>
-                                <td className="col-6">
-                                    <p>{product.mota}</p>
-                                </td>
-                                <td className={cx('handle-button', 'col-1')}>
-                                    <CustomButton
-                                        icon={faPenToSquare}
-                                        color="var(--button-primary)"
-                                        onClick={() => handleEdit(product)}
-                                    />
-                                    <CustomButton
-                                        icon={faTrashCan}
-                                        color="var(--button-danger)"
-                                        onClick={() => handleDelete(product.id)}
-                                    />
-                                </td>
+                <div className={cx('table-wrapper')}>
+                    <Table className={cx('table')} hover >
+                        <thead className={cx('table-heading')}>
+                            <tr className="d-flex">
+                                <th className="col-2" scope="col">
+                                    Tên món ăn
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Hình ảnh
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Giá
+                                </th>
+                                <th className="col-6" scope="col">
+                                    Mô tả
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {items.map((product, index) => (
+                                <tr className={cx('d-flex')} key={index}>
+                                    <td className={cx('col-2', 'item__name')}>
+                                        <p className={cx('item__name--text')}>{product.tenmon}</p>
+                                    </td>
+                                    <td className={cx('col-2', 'item__image')}>
+                                        <img className={cx('item__image--inner')} src={product.hinhmon} alt="" />
+                                    </td>
+                                    <td className={cx('col-1', 'd-flex', 'item__cost')}>
+                                        <p className={cx('item__cost--text')}>{product.gia}</p>
+                                    </td>
+                                    <td className="col-6">
+                                        <p>{product.mota}</p>
+                                    </td>
+                                    <td className={cx('handle-button', 'col-1')}>
+                                        <CustomButton
+                                            icon={faPenToSquare}
+                                            color="var(--button-primary)"
+                                            onClick={() => handleEdit(product)}
+                                        />
+                                        <CustomButton
+                                            icon={faTrashCan}
+                                            color="var(--button-danger)"
+                                            onClick={() => handleDelete(product.id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
                 {/* Modal Delete */}
                 <Modal show={showDeleteModal} onHide={handleDeleteCancel} size="lg" className={cx('modal')}>
                     <Modal.Header closeButton className={cx('modal-header')}>
@@ -395,7 +408,7 @@ function Warehouse() {
                                     className="form-control"
                                     id="madanhmuc"
                                     name="madanhmuc"
-                                    defaultValue={editOrder?.madanhmuc} 
+                                    defaultValue={editOrder?.madanhmuc}
                                     placeholder="Vui lòng nhập mã danh mục"
                                 />
                             </div>
@@ -406,7 +419,7 @@ function Warehouse() {
                                     className="form-control"
                                     id="tenmon"
                                     name="tenmon"
-                                    defaultValue={editOrder?.tenmon} 
+                                    defaultValue={editOrder?.tenmon}
                                     placeholder="Vui lòng nhập tên món"
                                 />
                             </div>
@@ -419,7 +432,7 @@ function Warehouse() {
                                     className="form-control"
                                     type="file"
                                     name="hinhmon"
-                                    onChange={handleFileChange} 
+                                    onChange={handleFileChange}
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -429,7 +442,7 @@ function Warehouse() {
                                     className="form-control"
                                     id="gia"
                                     name="gia"
-                                    defaultValue={editOrder?.gia?.replace(/\D/g, '')} 
+                                    defaultValue={editOrder?.gia?.replace(/\D/g, '')}
                                     placeholder="Vui lòng nhập giá"
                                 />
                             </div>
@@ -440,7 +453,7 @@ function Warehouse() {
                                     className="form-control"
                                     id="mota"
                                     name="mota"
-                                    defaultValue={editOrder?.mota} 
+                                    defaultValue={editOrder?.mota}
                                     placeholder="Vui lòng nhập mô tả"
                                 />
                             </div>

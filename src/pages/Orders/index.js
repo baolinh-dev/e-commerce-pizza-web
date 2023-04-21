@@ -1,4 +1,5 @@
 import CustomButton from '~/components/CustomButton';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
@@ -29,13 +30,13 @@ function Order() {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [formData, setFormData] = useState({
         id: '',
-        tenkhachhang: '', 
+        tenkhachhang: '',
         fullname: '',
         email: '',
         sodienthoai: '',
         ngaydathang: '',
         tongtien: '',
-        ghichu: '', 
+        ghichu: '',
     });
 
     // Register Function
@@ -44,7 +45,7 @@ function Order() {
             ...formData,
             [event.target.name]: event.target.value,
         });
-    }; 
+    };
     console.log(formData);
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -55,7 +56,7 @@ function Order() {
         // Check for errors
         if (!tenkhachhang) {
             errorMessages.push('Vui lòng nhập tên khách hàng!');
-        } 
+        }
 
         if (!fullname) {
             errorMessages.push('Vui lòng nhập họ và tên khách hàng!');
@@ -175,7 +176,7 @@ function Order() {
     const handleEditSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const tenkhachhang = formData.get('tenkhachhang') ?? ''; 
+        const tenkhachhang = formData.get('tenkhachhang') ?? '';
         const fullname = formData.get('fullname') ?? '';
         const email = formData.get('email') ?? '';
         const sodienthoai = formData.get('sodienthoai') ?? '';
@@ -188,7 +189,7 @@ function Order() {
         // Check for errors
         if (!tenkhachhang) {
             errorMessages.push('Vui lòng nhập username khách hàng!');
-        } 
+        }
 
         if (!fullname) {
             errorMessages.push('Vui lòng nhập họ và tên khách hàng!');
@@ -214,7 +215,7 @@ function Order() {
             errorMessages.push('Vui lòng chọn ngày đặt hàng!');
         } else if (!regexInteger.test(tongtien)) {
             errorMessages.push('Tổng tiền phải là số nguyên!');
-        } 
+        }
 
         if (!ghichu) {
             errorMessages.push('Vui lòng nhập ghi chú!');
@@ -233,7 +234,7 @@ function Order() {
                     `/AppFood/updatedonhang.php`,
                     {
                         id: editOrder.id,
-                        tenkhachhang, 
+                        tenkhachhang,
                         fullname,
                         email,
                         sodienthoai,
@@ -295,67 +296,79 @@ function Order() {
                         value={searchKeyword}
                         onChange={handleSearch}
                     />
-                    <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
+                    <div className={cx('admin-infor')}>
+                        <div className={cx('admin-infor-detail')}>
+                            <p className={cx('username')}>{Cookies.get('fullname')}</p>
+                            <span className={cx('role')}>{Cookies.get('role')}</span>
+                        </div>
+                        <img src={Cookies.get('avatar')} />
+                    </div>
                 </div>
                 {/* Body */}
-                <Table className={cx('table')} hover>
-                    <thead className={cx('table-heading')}>
-                        <tr className="d-flex">
-                            <th className="col-1" scope="col">
-                                Username
-                            </th> 
-                            <th className="col-2" scope="col">
-                                Họ và tên
-                            </th>
-                            <th className="col-2" scope="col">
-                                Email
-                            </th>
-                            <th className="col-1" scope="col">
-                                Điện thoại
-                            </th>
-                            <th className="col-1" scope="col">
-                                Date
-                            </th>
-                            <th className="col-1" scope="col">
-                                Tổng tiền
-                            </th>
-                            <th className="col-3" scope="col">
-                                Ghi chú
-                            </th> 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {items.map((order, index) => (
-                            <tr className={cx('d-flex')} key={index}>
-                                <td className={cx('col-1', 'item__name')}>
-                                    <p className={cx('item__name--text')}>{order.tenkhachhang}</p>
-                                </td>
-                                <td className="col-2" style={{ overflow: 'hidden' }}>
-                                    {order.fullname}
-                                </td>
-                                <td className="col-2" style={{ overflow: 'hidden' }}>
-                                    {order.email}
-                                </td>
-                                <td className="col-1">{order.sodienthoai}</td>
-                                <td className="col-1">{order.ngaydathang}</td>
-                                <td className="col-1">{order.tongtien}</td>
-                                <td className="col-3">{order.ghichu}</td> 
-                                <td className={cx('handle-button', 'col-1')}>
-                                    <CustomButton
-                                        icon={faPenToSquare}
-                                        color="var(--button-primary)"
-                                        onClick={() => handleEdit(order)}
-                                    />
-                                    <CustomButton
-                                        icon={faTrashCan}
-                                        color="var(--button-danger)"
-                                        onClick={() => handleDelete(order.id)}
-                                    />
-                                </td> 
+                <div className={cx('table-header')}>
+                    <h1 className="table-heading">Orders Table</h1>
+                    <CustomButton icon={faPlus} color="var(--button-primary)" onClick={handleShowRegisterModal} />
+                </div>
+                <div className={cx('table-wrapper')}>
+                    <Table className={cx('table')} hover>
+                        <thead className={cx('table-heading')}>
+                            <tr className="d-flex">
+                                <th className="col-1" scope="col">
+                                    Username
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Họ và tên
+                                </th>
+                                <th className="col-2" scope="col">
+                                    Email
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Điện thoại
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Date
+                                </th>
+                                <th className="col-1" scope="col">
+                                    Tổng tiền
+                                </th>
+                                <th className="col-3" scope="col">
+                                    Ghi chú
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {items.map((order, index) => (
+                                <tr className={cx('d-flex')} key={index}>
+                                    <td className={cx('col-1', 'item__name')}>
+                                        <p className={cx('item__name--text')}>{order.tenkhachhang}</p>
+                                    </td>
+                                    <td className="col-2" style={{ overflow: 'hidden' }}>
+                                        {order.fullname}
+                                    </td>
+                                    <td className="col-2" style={{ overflow: 'hidden' }}>
+                                        {order.email}
+                                    </td>
+                                    <td className="col-1">{order.sodienthoai}</td>
+                                    <td className="col-1">{order.ngaydathang}</td>
+                                    <td className="col-1">{order.tongtien}</td>
+                                    <td className="col-3">{order.ghichu}</td>
+                                    <td className={cx('handle-button', 'col-1')}>
+                                        <CustomButton
+                                            icon={faPenToSquare}
+                                            color="var(--button-primary)"
+                                            onClick={() => handleEdit(order)}
+                                        />
+                                        <CustomButton
+                                            icon={faTrashCan}
+                                            color="var(--button-danger)"
+                                            onClick={() => handleDelete(order.id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
                 {/* Modal Delete */}
                 <Modal show={showDeleteModal} onHide={handleDeleteCancel} size="lg" className={cx('modal')}>
                     <Modal.Header closeButton className={cx('modal-header')}>
@@ -387,10 +400,10 @@ function Order() {
                                     className="form-control"
                                     id="tenkhachhang"
                                     name="tenkhachhang"
-                                    defaultValue={editOrder?.tenkhachhang} 
+                                    defaultValue={editOrder?.tenkhachhang}
                                     placeholder="Vui lòng nhập tên khách hàng"
                                 />
-                            </div> 
+                            </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="fullname">Fullname:</label>
                                 <input
@@ -398,7 +411,7 @@ function Order() {
                                     className="form-control"
                                     id="fullname"
                                     name="fullname"
-                                    defaultValue={editOrder?.fullname} 
+                                    defaultValue={editOrder?.fullname}
                                     placeholder="Vui lòng nhập tên khách hàng"
                                 />
                             </div>
@@ -409,7 +422,7 @@ function Order() {
                                     className="form-control"
                                     id="email"
                                     name="email"
-                                    defaultValue={editOrder?.email} 
+                                    defaultValue={editOrder?.email}
                                     placeholder="Vui lòng nhập email"
                                 />
                             </div>
@@ -420,7 +433,7 @@ function Order() {
                                     className="form-control"
                                     id="sodienthoai"
                                     name="sodienthoai"
-                                    defaultValue={editOrder?.sodienthoai}  
+                                    defaultValue={editOrder?.sodienthoai}
                                     placeholder="Vui lòng nhập số điện thoại"
                                 />
                             </div>
@@ -451,10 +464,10 @@ function Order() {
                                     type="text"
                                     className="form-control"
                                     id="tongtien"
-                                    name="tongtien"  
+                                    name="tongtien"
                                     placeholder="Vui lòng nhập tổng tiền"
                                     defaultValue={editOrder?.tongtien?.replace(/\D/g, '')}
-                                /> 
+                                />
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="phone">Ghi Chú</label>
@@ -462,7 +475,7 @@ function Order() {
                                     type="text"
                                     className="form-control"
                                     id="ghichu"
-                                    name="ghichu" 
+                                    name="ghichu"
                                     placeholder="Vui lòng nhập ghi chú"
                                     defaultValue={editOrder?.ghichu}
                                 />
@@ -499,7 +512,7 @@ function Order() {
                                     onChange={handleInputChange}
                                     placeholder="Nhập tên username"
                                 />
-                            </div> 
+                            </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="fullname">Fullname:</label>
                                 <input

@@ -28,14 +28,21 @@
 }
 .content__header {
     display: flex;
-    justify-content: space-between;
-    padding: 16px 20px;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 8px 20px; 
+    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2); 
+    margin-bottom: 20px; 
+    height: 78px;
+    display: flex;
+    align-items: center;
 }
 .content__header input,
 .content__header select {
     padding: 8px 20px;
     border-radius: 40px;
-    width: 40%;
+    width: 40%; 
+    min-height: 40px;
     outline: none;
     border: none;
     box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.4);
@@ -70,4 +77,47 @@
     height: 68px; 
     border-radius: 50%; 
     border: 1px solid #ddd;
+}
+.admin-infor {
+    display: flex;
+    padding: 4px 0;
+    align-items: center; 
+    margin-bottom: 28px; 
+    margin-top: 20px;
+}
+.admin-infor img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid #ddd; 
+    margin-left: 20px;
+}
+.admin-infor-detail { 
+    padding-top: 10px;
+}
+.admin-infor-detail .username {
+    font-size: 16px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.admin-infor-detail .role {
+    font-style: italic;
+    font-size: 15px;
+}
+.admin-infor p {
+    font-size: 20px;
+}  
+.table-wrapper { 
+    padding: 0 20px;
+}
+.table-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
