@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { Chart } from 'react-google-charts';
 import classNames from 'classnames/bind';
 import styles from './Dashboard.module.scss'; 
-import Cookies from 'js-cookie';
 var cx = classNames.bind(styles);
 function DashBoard() {
     // useState
