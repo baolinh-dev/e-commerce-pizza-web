@@ -5,19 +5,20 @@
 :root {
     --primary: #f95b11;
     --second: #f42f1d;
-    --third: #F8C9B3;
-    --fourth: #F8C9B3; 
-    --button-primary: #0d6efd; 
+    --third: #f8c9b3;
+    --fourth: #f8c9b3;
+    --button-primary: #0d6efd;
     --button-danger: #dc3545;
-} 
-p, td{ 
+}
+p,
+td {
     font-weight: 500;
 }
 .d-flex {
     display: flex;
-} 
-.handle-button { 
-    display: flex; 
+}
+.handle-button {
+    display: flex;
     align-items: baseline;
 }
 * {
@@ -53,48 +54,43 @@ button {
 }
 
 .active {
-    background-color: var(--fourth); 
- 
+    background-color: var(--fourth);
+
     border-top-left-radius: 40px;
     border-bottom-left-radius: 40px;
     &:hover {
         padding: none;
     }
-} 
-.modal { 
-    
-} 
-.modal-header { 
-    
-} 
-.modal-title { 
-    font-size: 24px; 
-    text-align: center; 
+}
+.modal {
+}
+.modal-header {
+}
+.modal-title {
+    font-size: 24px;
+    text-align: center;
     width: 100%;
-} 
-.modal-body { 
-
-} 
-.modal-form { 
-
-} 
-.modal-form__group { 
-
-} 
-.modal-form__group label{ 
-    margin-bottom: 8px; 
+}
+.modal-body {
+}
+.modal-form {
+}
+.modal-form__group {
+}
+.modal-form__group label {
+    margin-bottom: 8px;
     font-weight: bold;
-}   
-.modal-form__group input{ 
-    padding: 8px 12px; 
-    border: 1px solid #ddd; 
-    border-radius: 12px; 
-    margin-bottom: 16px; 
+}
+.modal-form__group input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 16px;
     font-size: 16px;
-} 
-.modal-button { 
+}
+.modal-button {
     padding: 8px 16px;
-} 
+}
 .pagination {
     display: flex;
     justify-content: center;
@@ -113,11 +109,34 @@ button {
 .pagination a:hover {
     background-color: var(--primary);
     color: #fff;
-}   
-.pagination .active { 
+}
+.pagination .active {
     background-color: transparent;
 }
-.pagination .active a{ 
+.pagination .active a {
     background-color: var(--primary);
-    color: #000;  
+    color: #000;
+}
+
+.cs-message__content {
+    font-size: 20px ; 
+    background-color: var(--fourth);
+}  
+.cs-message--outgoing .cs-message__content { 
+    background-color: var(--third);
+} 
+.cs-message-input__content-editor-wrapper { 
+    font-size: 20px; 
+    background-color: var(--fourth);
+}  
+.cs-message-input__content-editor { 
+    background-color: var(--fourth);
+}
+.cs-button { 
+    width: 50px; 
+    height: 50px; 
+} 
+.cs-button svg { 
+    font-size: 20px;  
+    color: #000
 }

@@ -1,4 +1,4 @@
-import { faClipboardList, faGauge, faWarehouse } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faComment, faGauge, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 
 const Links = [ 
@@ -21,7 +21,13 @@ const Links = [
         path: "/orders", 
         name: "Orders", 
         icon: faClipboardList
+    }, 
+    { 
+        path: "/chatbox", 
+        name: "ChatGPT",  
+        icon: faComment
     },
-] 
+]  
+
 
 export default Links;

@@ -4,7 +4,7 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Typin
 import classNames from 'classnames/bind';
 import styles from './Chatbox.module.scss'; 
 var cx = classNames.bind(styles);
-const API_KEY = "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";
+const API_KEY = "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";
 // "Explain things like you would to a 10 year old learning how to code."
 const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
   "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
@@ -86,7 +86,7 @@ function ChatBox() {
 
   return (
     <div className="App">
-      <div style={{ position:"relative", height: "800px", width: "700px"  }}>
+      <div style={{ position:"relative", height: "100vh", width: "100%"  }}>
         <MainContainer>
           <ChatContainer>       
             <MessageList 
