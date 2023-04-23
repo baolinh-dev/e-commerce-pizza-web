@@ -29,16 +29,21 @@ function Login() {
                 const data = response.data;
                 const { username, role, fullname, avatar } = data.result[0]; 
                 console.log(data);
-                if (data.success && role === 'admin') { 
-                    toast.success('Đăng nhập thành công!');
-                    Cookies.set('username', username);
-                    Cookies.set('role', role);
-                    Cookies.set('fullname', fullname); 
-                    Cookies.set('avatar', avatar)
-                    // // Lưu thông tin đăng nhập vào cookie
-                    navigate('/dashboard'); // Chuyển hướng đến trang dashboard
+                if (data.success ) {  
+                    if(role === 'admin') { 
+                        toast.success('Đăng nhập thành công!');
+                        Cookies.set('username', username);
+                        Cookies.set('role', role);
+                        Cookies.set('fullname', fullname); 
+                        Cookies.set('avatar', avatar)
+                        // // Lưu thông tin đăng nhập vào cookie
+                        navigate('/dashboard'); // Chuyển hướng đến trang dashboard
+                    } else { 
+                        toast.error('Bạn không có quyền vào trang admin!');
+                    }
+
                 } else {
-                    toast.error('Đăng nhập không thành công!');
+                    toast.error('Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!');
                 }
             })
             .catch((error) => {
