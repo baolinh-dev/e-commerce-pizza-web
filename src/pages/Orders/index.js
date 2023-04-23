@@ -506,7 +506,7 @@ function Order() {
                 {/* Modal Register */}
                 <Modal className={cx('modal')} show={showRegisterModal} onHide={handleCloseRegisterModal} size="lg">
                     <Modal.Header className={cx('modal-header')} closeButton>
-                        <Modal.Title className={cx('modal-title')}>Register</Modal.Title>
+                        <Modal.Title className={cx('modal-title')}>Tạo đơn hàng</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleSubmit}>
@@ -518,18 +518,18 @@ function Order() {
                                     id="tenkhachhang"
                                     name="tenkhachhang"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập tên username"
+                                    placeholder="Vui lòng nhập tên username"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="fullname">Fullname:</label>
+                                <label htmlFor="fullname">Họ và tên:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="fullname"
                                     name="fullname"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập họ và tên"
+                                    placeholder="Vui lòng nhập họ và tên"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -540,7 +540,7 @@ function Order() {
                                     id="email"
                                     name="email"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập địa chỉ email"
+                                    placeholder="Vui lòng nhập địa chỉ email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -551,7 +551,7 @@ function Order() {
                                     id="sodienthoai"
                                     name="sodienthoai"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập số điện thoại"
+                                    placeholder="Vui lòng nhập số điện thoại"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -580,7 +580,7 @@ function Order() {
                                     id="tongtien"
                                     name="tongtien"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập tổng tiền"
+                                    placeholder="Vui lòng nhập tổng tiền"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -591,7 +591,7 @@ function Order() {
                                     id="ghichu"
                                     name="ghichu"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập ghi chú"
+                                    placeholder="Vui lòng nhập ghi chú"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>

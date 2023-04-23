@@ -501,7 +501,7 @@ function Warehouse() {
                                     id="madanhmuc"
                                     name="madanhmuc"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập mã danh mục"
+                                    placeholder="Vui lòng nhập mã danh mục"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -512,7 +512,7 @@ function Warehouse() {
                                     id="tenmon"
                                     name="tenmon"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập tên món"
+                                    placeholder="Vui lòng nhập tên món"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -540,7 +540,7 @@ function Warehouse() {
                                     id="gia"
                                     name="gia"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập giá"
+                                    placeholder="Vui lòng nhập giá"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -551,7 +551,7 @@ function Warehouse() {
                                     id="mota"
                                     name="mota"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập mô tả"
+                                    placeholder="Vui lòng nhập mô tả"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>

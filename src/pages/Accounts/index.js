@@ -421,14 +421,14 @@ function Accounts() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Tên đăng nhập:</label>
+                                <label htmlFor="username">Username:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="username"
                                     name="username"
                                     defaultValue={editUser?.username}
-                                    placeholder="Vui lòng nhập tên đăng nhập"
+                                    placeholder="Vui lòng nhập username"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -524,14 +524,14 @@ function Accounts() {
                     <Modal.Body className={cx('modal-body')}>
                         <form className={cx('modal-form')} onSubmit={handleSubmit}>
                             <div className={cx('modal-form__group')}>
-                                <label htmlFor="username">Tên đăng nhập:</label>
+                                <label htmlFor="username">Username:</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     id="username"
                                     name="username"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập tên đăng nhập"
+                                    placeholder="Vui lòng nhập username"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -559,7 +559,7 @@ function Accounts() {
                                     id="password"
                                     name="password"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập mật khẩu"
+                                    placeholder="Vui lòng nhập mật khẩu"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -570,7 +570,7 @@ function Accounts() {
                                     id="fullname"
                                     name="fullname"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập họ và tên"
+                                    placeholder="Vui lòng nhập họ và tên"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -581,7 +581,7 @@ function Accounts() {
                                     id="email"
                                     name="email"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập email"
+                                    placeholder="Vui lòng nhập email"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
@@ -592,7 +592,7 @@ function Accounts() {
                                     id="phone"
                                     name="phone"
                                     onChange={handleInputChange}
-                                    placeholder="Nhập số điện thoại"
+                                    placeholder="Vui lòng nhập số điện thoại"
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
