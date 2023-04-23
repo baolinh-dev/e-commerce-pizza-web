@@ -462,7 +462,8 @@ function Order() {
                                     name="ngaydathang"
                                     dateFormat="yyyy/MM/dd"
                                     todayButton="Today"
-                                    defaultValue={editOrder?.ngaydathang}
+                                    defaultValue={editOrder?.ngaydathang} 
+                                    value={editOrder?.ngaydathang} 
                                     placeholderText="Chọn ngày đặt hàng"
                                 />
                             </div>
