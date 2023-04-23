@@ -4,7 +4,7 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Typin
 import classNames from 'classnames/bind';
 import styles from './Chatbox.module.scss'; 
 var cx = classNames.bind(styles);
-const API_KEY = "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";
+const API_KEY = "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";
 // "Explain things like you would to a 10 year old learning how to code."
 const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
   "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
@@ -75,7 +75,6 @@ function ChatBox() {
     }).then((data) => {
       return data.json();
     }).then((data) => {
-      console.log(data);
       setMessages([...chatMessages, {
         message: data.choices[0].message.content,
         sender: "ChatGPT"
@@ -94,7 +93,6 @@ function ChatBox() {
               typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
             >
               {messages.map((message, i) => {
-                console.log(message)
                 return <Message key={i} model={message} />
               })}
             </MessageList>
