@@ -405,20 +405,19 @@ function Warehouse() {
                         <form className={cx('modal-form')} onSubmit={handleEditSubmit}>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="madanhmuc">
-                                    Mã danh mục:{' '}
-                                    <span className={cx('note')}>
-                                        {' '}
-                                        (1: Món chính, 2: Burger, 3: Đồ uống, 4: Món phụ)
-                                    </span>
+                                    Mã danh mục:
                                 </label>
-                                <input
-                                    type="text"
-                                    className="form-control"
+                                <select
+                                    className={cx('form-control', 'modal-select')}
                                     id="madanhmuc"
                                     name="madanhmuc"
                                     defaultValue={editOrder?.madanhmuc}
-                                    placeholder="Vui lòng nhập mã danh mục"
-                                />
+                                >
+                                    <option value="1">Món chính</option>
+                                    <option value="2">Burger</option>
+                                    <option value="3">Đồ uống</option>
+                                    <option value="4">Món phụ</option>
+                                </select>
                             </div>
                             <div className={cx('modal-form__group')}>
                                 <label htmlFor="tenmon">Tên món:</label>

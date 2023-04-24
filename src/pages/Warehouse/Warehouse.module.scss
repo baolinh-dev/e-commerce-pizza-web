@@ -1,4 +1,4 @@
-.table { 
+.table {
     margin-top: 4px;
 }
 .table-heading {
@@ -29,59 +29,60 @@
 }
 .content__header {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
-    padding: 8px 20px; 
-    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2); 
-    margin-bottom: 20px; 
+    padding: 8px 20px;
+    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+    margin-bottom: 20px;
     height: 78px;
     display: flex;
     align-items: center;
 }
-.content__header input, .content__header select  { 
-    padding: 8px 20px; 
-    border-radius: 40px; 
-    width: 40%; 
-    outline: none;  
+.content__header input,
+.content__header select {
+    padding: 8px 20px;
+    border-radius: 40px;
+    width: 40%;
+    outline: none;
     border: 1px solid #ddd;
     min-height: 40px;
-}   
-.content__header select {  
-    padding: 8px 4px; 
+}
+.content__header select {
+    padding: 8px 4px;
     width: 100%;
 }
-.content__header button { 
+.content__header button {
     box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
     border-radius: 50%;
     width: 40px;
     height: 40px;
 }
-.image-preview { 
+.image-preview {
     margin-bottom: 20px;
     /* border: 1px solid #ddd; */
     margin-left: 20px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    width: 100px; 
-    height: auto; 
-    padding: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100px;
+    height: auto;
+    padding: 10px;
     box-sizing: content-box;
-} 
+}
 .admin-infor {
     display: flex;
     padding: 4px 0;
-    align-items: center; 
-    margin-bottom: 28px; 
+    align-items: center;
+    margin-bottom: 28px;
     margin-top: 20px;
 }
 .admin-infor img {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    border: 1px solid #ddd; 
+    border: 1px solid #ddd;
     margin-left: 20px;
 }
-.admin-infor-detail { 
+.admin-infor-detail {
     padding-top: 10px;
 }
 .admin-infor-detail .username {
@@ -98,15 +99,23 @@
 }
 .admin-infor p {
     font-size: 20px;
-}  
-.table-wrapper { 
+}
+.table-wrapper {
     padding: 0 20px;
 }
-.table-header { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
+}
+// select modal
+.modal-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 16px;
 }
