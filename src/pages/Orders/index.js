@@ -13,8 +13,6 @@ import ReactPaginate from 'react-paginate';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { zonedTimeToUtc, format } from 'date-fns-tz';
-
 var cx = classNames.bind(styles);
 
 function Order() {
@@ -301,7 +299,7 @@ function Order() {
                             <p className={cx('username')}>{Cookies.get('fullname')}</p>
                             <span className={cx('role')}>{Cookies.get('role')}</span>
                         </div>
-                        <img src={Cookies.get('avatar')} />
+                        <img src={Cookies.get('avatar')} alt='avatar'/>
                     </div>
                 </div>
                 {/* Body */}
