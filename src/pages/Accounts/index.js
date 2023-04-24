@@ -1,5 +1,5 @@
 import CustomButton from '~/components/CustomButton';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { Modal, Button, Table } from 'react-bootstrap';
@@ -166,6 +166,15 @@ function Accounts() {
     // Edit Function
     const handleEdit = (user) => {
         setEditUser(user);
+
+        // Tìm tất cả các đối tượng trường input[type=file]
+        const fileInputs = document.querySelectorAll('input[type=file]');
+
+        // Đặt giá trị mặc định của tất cả các trường bằng đường dẫn của ảnh trong đối tượng user
+        fileInputs.forEach((fileInput) => {
+            fileInput.defaultValue = user.avatar;
+        });
+
         setShowEditModal(true);
     };
     //
@@ -318,7 +327,7 @@ function Accounts() {
                         <p className={cx('username')}>{Cookies.get('fullname')}</p>
                         <span className={cx('role')}>{Cookies.get('role')}</span>
                     </div>
-                    <img src={Cookies.get('avatar')} alt='avatar'/>
+                    <img src={Cookies.get('avatar')} alt="avatar" />
                 </div>
             </div>
             {/* Content */}
@@ -336,7 +345,7 @@ function Accounts() {
                     />
                 </div>
                 <div className={cx('table-wrapper')}>
-                    <Table style={{border: `1px solid #ddd`}} className={cx('table')} hover>
+                    <Table style={{ border: `1px solid #ddd` }} className={cx('table')} hover>
                         <thead className={cx('table-heading')}>
                             <tr className="d-flex">
                                 <th className="col-2" scope="col">
@@ -367,7 +376,7 @@ function Accounts() {
                                 <tr className={cx('d-flex')} key={index}>
                                     <td className="col-2">{user.username}</td>
                                     <td className="col-1">
-                                        <img className={cx('avatar-table')} src={user.avatar} alt='avatar'/>
+                                        <img className={cx('avatar-table')} src={user.avatar} alt="avatar" />
                                     </td>
                                     <td className="col-2">
                                         {/* {user.password.replace(/./g, '*')} */}
@@ -445,7 +454,6 @@ function Accounts() {
                                     className="form-control"
                                     id="password"
                                     name="password"
-                                    defaultValue={editUser?.password}
                                     placeholder="Vui lòng nhập mật khẩu"
                                 />
                             </div>
@@ -544,11 +552,13 @@ function Accounts() {
                                     />
                                 )}
                                 <input
-                                    className="form-control"
+                                    className="form-control input-file"
                                     type="file"
                                     name="avatar"
                                     onChange={handleInputChange}
                                     placeholder="Chọn hình ảnh"
+                                    value={editUser?.avatar}
+                                    defaultValue={editUser?.avatar}
                                 />
                             </div>
                             <div className={cx('modal-form__group')}>
