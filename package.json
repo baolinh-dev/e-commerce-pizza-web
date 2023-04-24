@@ -20,6 +20,8 @@
         "customize-cra": "^1.0.0",
         "date-fns": "^2.29.3",
         "date-fns-tz": "^2.0.0",
+        "dotenv": "^16.0.3",
+        "dotenv-webpack": "^8.0.1",
         "js-cookie": "^3.0.1",
         "moment": "^2.29.4",
         "moment-timezone": "^0.5.43",

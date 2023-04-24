@@ -18,22 +18,6 @@ function DashBoard() {
     const apigetpiechart = '/AppFood/getdashboard_piechart.php';
     const apigetlinechart = '/AppFood/getdashboard_linechart.php';
     const apigetcolumnchart = '/AppFood/getdashboard_columnchart.php';
-    // data
-    const dataColumnChart = [
-        ['Tháng', 'Tổng tiền'],
-        ['Tháng 1', 5000000],
-        ['Tháng 2', 8000000],
-        ['Tháng 3', 4000000],
-        ['Tháng 4', 7000000],
-        ['Tháng 5', 6000000],
-        ['Tháng 6', 9000000],
-        ['Tháng 7', 5500000],
-        ['Tháng 8', 3500000],
-        ['Tháng 9', 4500000],
-        ['Tháng 10', 7500000],
-        ['Tháng 11', 6000000],
-        ['Tháng 12', 8500000],
-    ];
     // ham sort ngay
     function formatDataLineChart(dataLineChart) {
         const processedData = dataLineChart
@@ -85,7 +69,7 @@ function DashBoard() {
         setSavePieData((prev) => {
             return [...prev, ...pieChart.map((obj) => [obj.name, Number(obj.quantity)])];
         });
-    }, [pieChart]);
+    }, [pieChart, savePieData]);
 
     // useEffect to xu li lai line chart
     useEffect(() => {
@@ -93,7 +77,7 @@ function DashBoard() {
         setSaveLineData((prev) => {
             return [...prev, ...lineChart.map((arr) => [arr[0], Number(arr[1])])];
         });
-    }, [lineChart]);
+    }, [lineChart, saveLineData]);
 
     // useEffect to xu li lai column chart
     useEffect(() => {
@@ -101,7 +85,7 @@ function DashBoard() {
         setSaveColumnData((prev) => {
             return [...prev, ...columnChart.map((arr) => [arr[0], Number(arr[1])])];
         });
-    }, [columnChart]);
+    }, [columnChart, saveColumnData]);
     // Render UI
     return (
         <div className={cx('dashboard')}>

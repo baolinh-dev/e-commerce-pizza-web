@@ -318,7 +318,7 @@ function Accounts() {
                         <p className={cx('username')}>{Cookies.get('fullname')}</p>
                         <span className={cx('role')}>{Cookies.get('role')}</span>
                     </div>
-                    <img src={Cookies.get('avatar')} />
+                    <img src={Cookies.get('avatar')} alt='avatar'/>
                 </div>
             </div>
             {/* Content */}
@@ -367,7 +367,7 @@ function Accounts() {
                                 <tr className={cx('d-flex')} key={index}>
                                     <td className="col-2">{user.username}</td>
                                     <td className="col-1">
-                                        <img className={cx('avatar-table')} src={user.avatar} />
+                                        <img className={cx('avatar-table')} src={user.avatar} alt='avatar'/>
                                     </td>
                                     <td className="col-2">
                                         {/* {user.password.replace(/./g, '*')} */}

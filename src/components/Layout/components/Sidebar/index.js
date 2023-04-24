@@ -1,12 +1,9 @@
 import images from '~/assets/images';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Sidebar.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faClipboardList, faGauge, faUserGear, faWarehouse } from '@fortawesome/free-solid-svg-icons';
-import { faCircleUser, faSquare, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import links from './Links';
 import Cookies from 'js-cookie';

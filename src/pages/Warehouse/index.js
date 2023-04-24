@@ -32,8 +32,6 @@ function Warehouse() {
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [category, setCategory] = useState('all');
     const [categories, setCategories] = useState([]);
-    // URL hình ảnh
-    const [file, setFile] = useState('');
     const [formData, setFormData] = useState({
         id: '',
         madanhmuc: '',
@@ -152,7 +150,6 @@ function Warehouse() {
         axios
             .get(`/AppFood/danhmuc.php`)
             .then((response) => {
-                const categoryNames = response.data.result.map((category) => category.tendanhmuc);
                 setCategories(response.data.result);
             })
             .catch((error) => {
@@ -186,7 +183,8 @@ function Warehouse() {
     };
     // Edit Function
     const handleEdit = (product) => {
-        seteditOrder(product);
+        seteditOrder(product); 
+        setShowEditModal(true)
     };
     const handleEditSubmit = (event) => {
         event.preventDefault();
@@ -314,7 +312,7 @@ function Warehouse() {
                             <p className={cx('username')}>{Cookies.get('fullname')}</p>
                             <span className={cx('role')}>{Cookies.get('role')}</span>
                         </div>
-                        <img src={Cookies.get('avatar')} />
+                        <img src={Cookies.get('avatar')} alt='avatar'/>
                     </div>
                 </div>
                 <div className={cx('table-header')}>
@@ -397,7 +395,7 @@ function Warehouse() {
                     </Modal.Footer>
                 </Modal>
                 {/* Model Edit */}
-                <Modal show={!!editOrder} onHide={handleEditCancel} size="lg" className={cx('modal-edit')}>
+                <Modal show={showEditModal} onHide={handleEditCancel} size="lg" className={cx('modal-edit')}>
                     <Modal.Header closeButton className={cx('modal-header')}>
                         <Modal.Title className={cx('modal-title')}>Sửa thông tin sản phẩm</Modal.Title>
                     </Modal.Header>
