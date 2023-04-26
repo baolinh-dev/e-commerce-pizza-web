@@ -375,9 +375,19 @@ function Accounts() {
                             {items.map((user, index) => (
                                 <tr className={cx('d-flex')} key={index}>
                                     <td className="col-2">{user.username}</td>
-                                    <td className="col-1">
-                                        <img className={cx('avatar-table')} src={user.avatar} alt="avatar" />
-                                    </td>
+                                    {user.avatar ? (
+                                        <td className="col-1">
+                                            <img className={cx('avatar-table')} src={user.avatar} alt="avatar" />
+                                        </td>
+                                    ) : (
+                                        <td className="col-1">
+                                            <img
+                                                className={cx('avatar-table')}
+                                                src="/imgs/avatar-1.jpg"
+                                                alt="default avatar"
+                                            />
+                                        </td>
+                                    )}
                                     <td className="col-2">
                                         {/* {user.password.replace(/./g, '*')} */}
                                         <div style={{ overflow: 'hidden' }}>{user.password.replace(/./g, '*')}</div>

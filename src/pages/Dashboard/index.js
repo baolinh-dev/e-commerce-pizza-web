@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState, useCallback } from 'react';
 import { Chart } from 'react-google-charts';
 import classNames from 'classnames/bind';
-import styles from './Dashboard.module.scss'; 
+import styles from './Dashboard.module.scss';
 var cx = classNames.bind(styles);
 function DashBoard() {
     // useState
@@ -14,10 +14,10 @@ function DashBoard() {
     const [savePieData, setSavePieData] = useState([['Task', 'Hours per Day']]);
     const [saveLineData, setSaveLineData] = useState([['Ngày', 'Tổng tiền']]);
     const [saveColumnData, setSaveColumnData] = useState([['Tháng', 'Tổng tiền']]);
-    const apigetcards = '/AppFood/getdashboardcards.php';
-    const apigetpiechart = '/AppFood/getdashboard_piechart.php';
-    const apigetlinechart = '/AppFood/getdashboard_linechart.php';
-    const apigetcolumnchart = '/AppFood/getdashboard_columnchart.php';
+    const API_GET_CARDS = '/AppFood/getdashboardcards.php';
+    const API_GET_PIE_CHART = '/AppFood/getdashboard_piechart.php';
+    const API_GET_LINE_CHART = '/AppFood/getdashboard_linechart.php';
+    const API_GET_COLUMN_CHART = '/AppFood/getdashboard_columnchart.php';
     // ham sort ngay
     function formatDataLineChart(dataLineChart) {
         const processedData = dataLineChart
@@ -40,10 +40,10 @@ function DashBoard() {
     // useEffect to call api card and chart
     const fetchData = useCallback(() => {
         Promise.all([
-            axios.get(apigetcards),
-            axios.get(apigetpiechart),
-            axios.get(apigetlinechart),
-            axios.get(apigetcolumnchart),
+            axios.get(API_GET_CARDS),
+            axios.get(API_GET_PIE_CHART),
+            axios.get(API_GET_LINE_CHART),
+            axios.get(API_GET_COLUMN_CHART),
         ])
             .then((response) => {
                 const data1 = response[0].data;
@@ -58,33 +58,27 @@ function DashBoard() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [apigetcards, apigetpiechart, apigetlinechart, apigetcolumnchart]);
+    }, [API_GET_CARDS, API_GET_PIE_CHART, API_GET_LINE_CHART, API_GET_COLUMN_CHART]);
 
     useEffect(() => {
         fetchData();
     }, [fetchData]);
-    // useEffect to xu li lai pie chart
     useEffect(() => {
         if (!pieChart || savePieData.length > 1) return;
-        setSavePieData((prev) => {
-            return [...prev, ...pieChart.map((obj) => [obj.name, Number(obj.quantity)])];
-        });
+        const newPieData = pieChart.map((obj) => [obj.name, Number(obj.quantity)]);
+        setSavePieData((prev) => [...prev, ...newPieData]);
     }, [pieChart, savePieData]);
 
-    // useEffect to xu li lai line chart
     useEffect(() => {
         if (!lineChart || saveLineData.length > 1) return;
-        setSaveLineData((prev) => {
-            return [...prev, ...lineChart.map((arr) => [arr[0], Number(arr[1])])];
-        });
+        const newLineData = lineChart.map((arr) => [arr[0], Number(arr[1])]);
+        setSaveLineData((prev) => [...prev, ...newLineData]);
     }, [lineChart, saveLineData]);
 
-    // useEffect to xu li lai column chart
     useEffect(() => {
         if (!columnChart || saveColumnData.length > 1) return;
-        setSaveColumnData((prev) => {
-            return [...prev, ...columnChart.map((arr) => [arr[0], Number(arr[1])])];
-        });
+        const newColumnData = columnChart.map((arr) => [arr[0], Number(arr[1])]);
+        setSaveColumnData((prev) => [...prev, ...newColumnData]);
     }, [columnChart, saveColumnData]);
     // Render UI
     return (
