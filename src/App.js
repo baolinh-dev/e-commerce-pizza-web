@@ -1,7 +1,7 @@
 import { publicRoutes } from './routes';
 import DefaultLayout from './components/Layout/DefaultLayout';
-import LoginLayout from './components/Layout/LoginLayout'; 
-import Login from "~/pages/Login"; 
+import LoginLayout from './components/Layout/LoginLayout';
+import Login from '~/pages/Login';
 import { Routes, Route } from 'react-router-dom';
 function App() {
     function getLayout(component) {
